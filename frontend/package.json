@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@whereby.com/browser-sdk": "2.0.0-alpha7",
+    "assert": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

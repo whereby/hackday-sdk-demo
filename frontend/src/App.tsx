@@ -1,10 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { useLocalMedia, VideoView } from "@whereby.com/browser-sdk";
+
+import reactLogo from "./assets/react.svg";
+
+import viteLogo from "/vite.svg";
+import "./App.css";
+
+const WHEREBY_ROOM =
+  "https://funtimes.whereby.com/quiz-app8b84481f-02ad-41d3-86dd-05c537e00ed9";
+
+const PreCall = () => {
+  const localMedia = useLocalMedia({ audio: false, video: true });
+
+  // console.log(localMedia);
+
+  // const { currentCameraDeviceId, cameraDevices, localStream } =
+  // localMedia.state;
+  // const { setCameraDevice, toggleCameraEnabled } = localMedia.actions;
+  // const { VideoView } = components;
+
+  // const { components } = VideoView;
+
+  return (
+    <div className="preCallView">
+      hehe
+      {/* Render any UI, making use of state
+      {cameraDevices.map((d) => (
+        <p
+          key={d.deviceId}
+          onClick={() => {
+            if (d.deviceId !== currentCameraDeviceId) {
+              setCameraDevice(d.deviceId);
+            }
+          }}
+        >
+          {d.label}
+        </p>
+      ))}
+      <VideoView muted stream={localStream} /> */}
+    </div>
+  );
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -29,7 +68,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
