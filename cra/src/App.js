@@ -38,6 +38,7 @@ const MyPreCallUX = ({ localMedia }) => {
 const MyVideoCall = ({ localMedia }) => {
   const { state, actions, components } = useRoomConnection(WHEREBY_ROOM, {
     localMedia,
+    logger: console,
   });
 
   const { connectionState, remoteParticipants } = state;
@@ -62,7 +63,9 @@ function App() {
   return (
     <div className="App">
       <main>
-        <button onClick={() => setIsConnected(true)}>All good!</button>
+        <button onClick={() => setIsConnected(!isConnected)}>
+          {isConnected ? "Disconnect" : "All good, connect me now!"}
+        </button>
         {isConnected ? (
           <MyVideoCall localMedia={localMedia} />
         ) : (
