@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { useLocalMedia, VideoView } from "@whereby.com/browser-sdk";
+
 import "./App.css";
 
 import {
@@ -7,33 +10,10 @@ import {
   useRoomConnection,
 } from "@whereby.com/browser-sdk";
 
+import { PreCallSetup, SelfView } from "./components/PreCall";
+
 const WHEREBY_ROOM =
   "https://funtimes.whereby.com/quiz-app8b84481f-02ad-41d3-86dd-05c537e00ed9";
-
-const MyPreCallUX = ({ localMedia }) => {
-  const { currentCameraDeviceId, cameraDevices, localStream } =
-    localMedia.state;
-  const { setCameraDevice, toggleCameraEnabled } = localMedia.actions;
-
-  return (
-    <div className="preCallView">
-      {/* Render any UI, making use of state */}
-      {cameraDevices.map((d) => (
-        <p
-          key={d.deviceId}
-          onClick={() => {
-            if (d.deviceId !== currentCameraDeviceId) {
-              setCameraDevice(d.deviceId);
-            }
-          }}
-        >
-          {d.label}
-        </p>
-      ))}
-      <VideoView muted stream={localStream} />
-    </div>
-  );
-};
 
 const MyVideoCall = ({ localMedia }) => {
   const { state, actions, components } = useRoomConnection(WHEREBY_ROOM, {
@@ -48,9 +28,18 @@ const MyVideoCall = ({ localMedia }) => {
   console.log(connectionState);
   return (
     <div className="videoGrid">
-      {/* Render any UI, making use of state */}
+      <div>
+        <SelfView localMedia={localMedia}></SelfView>
+        <span>you</span>
+      </div>
+
       {remoteParticipants.map((p) => (
-        <VideoView key={p.id} stream={p.stream} />
+        <div>
+          <motion.div animate={{ x: 100 }} whileHover={{ scale: 1.2 }}>
+            <VideoView key={p.id} stream={p.stream} />
+            <span>Participant {p.id}</span>
+          </motion.div>
+        </div>
       ))}
     </div>
   );
@@ -58,19 +47,20 @@ const MyVideoCall = ({ localMedia }) => {
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
+  // const [numParticipants, setNumParticipants] = useState(0);
   const localMedia = useLocalMedia({ audio: false, video: true });
 
   return (
     <div className="App">
       <main>
-        <button onClick={() => setIsConnected(!isConnected)}>
-          {isConnected ? "Disconnect" : "All good, connect me now!"}
-        </button>
         {isConnected ? (
           <MyVideoCall localMedia={localMedia} />
         ) : (
-          <MyPreCallUX localMedia={localMedia} />
+          <PreCallSetup localMedia={localMedia} />
         )}
+        <button onClick={() => setIsConnected(!isConnected)}>
+          {isConnected ? "Disconnect" : "All good, connect me now!"}
+        </button>
       </main>
     </div>
   );
