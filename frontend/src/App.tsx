@@ -17,6 +17,10 @@ const VideoCall = ({ localMedia }: any) => {
   const { state, actions, components } = useRoomConnection(WHEREBY_ROOM, {
     localMedia,
     logger: console,
+    localMediaConstraints: {
+      audio: false,
+      video: true,
+    },
   });
 
   const { roomConnectionStatus, remoteParticipants } = state;
