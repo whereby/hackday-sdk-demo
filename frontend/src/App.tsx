@@ -8,50 +8,53 @@ import {
 } from "@whereby.com/browser-sdk";
 import { PreCallSetup, SelfView } from "./components/PreCall";
 
+import PreCallView from "./views/PreCallView";
+import LobbyView from "./views/LobbyView";
+
 import "./App.css";
 
 const WHEREBY_ROOM =
   "https://funtimes.whereby.com/quiz-app8b84481f-02ad-41d3-86dd-05c537e00ed9";
 
-const VideoCall = ({ localMedia }: any) => {
-  const { state, actions, components } = useRoomConnection(WHEREBY_ROOM, {
-    localMedia,
-    logger: console,
-    localMediaConstraints: {
-      audio: false,
-      video: true,
-    },
-  });
+// const VideoCall = ({ localMedia }: any) => {
+//   const { state, actions, components } = useRoomConnection(WHEREBY_ROOM, {
+//     localMedia,
+//     logger: console,
+//     localMediaConstraints: {
+//       audio: false,
+//       video: true,
+//     },
+//   });
 
-  const { roomConnectionStatus, remoteParticipants } = state;
-  console.log(roomConnectionStatus);
+//   const { roomConnectionStatus, remoteParticipants } = state;
+//   console.log(roomConnectionStatus);
 
-  // const { toggleCamera, toggleMicrophone } = actions;
+//   // const { toggleCamera, toggleMicrophone } = actions;
 
-  console.log(roomConnectionStatus);
+//   console.log(roomConnectionStatus);
 
-  return (
-    <div className="videoGrid">
-      <div>
-        <SelfView localMedia={localMedia}></SelfView>
-        <span>you</span>
-      </div>
+//   return (
+//     <div className="videoGrid">
+//       <div>
+//         <SelfView localMedia={localMedia}></SelfView>
+//         <span>you</span>
+//       </div>
 
-      {remoteParticipants.map((p) => (
-        <>
-          {p.stream && (
-            <div>
-              <motion.div animate={{ x: 100 }} whileHover={{ scale: 1.2 }}>
-                <VideoView key={p.id} stream={p.stream} />
-                <span>Participant {p.id}</span>
-              </motion.div>
-            </div>
-          )}
-        </>
-      ))}
-    </div>
-  );
-};
+//       {remoteParticipants.map((p) => (
+//         <>
+//           {p.stream && (
+//             <div>
+//               <motion.div animate={{ x: 100 }} whileHover={{ scale: 1.2 }}>
+//                 <VideoView key={p.id} stream={p.stream} />
+//                 <span>Participant {p.id}</span>
+//               </motion.div>
+//             </div>
+//           )}
+//         </>
+//       ))}
+//     </div>
+//   );
+// };
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
@@ -62,9 +65,12 @@ function App() {
     <div className="App">
       <main>
         {isConnected ? (
-          <VideoCall localMedia={localMedia} />
+          <LobbyView localMedia={localMedia} />
         ) : (
-          <PreCallSetup localMedia={localMedia} />
+          <PreCallView
+            localMedia={localMedia}
+            handleOnReady={() => setIsConnected(true)}
+          />
         )}
 
         <button onClick={() => setIsConnected(!isConnected)}>

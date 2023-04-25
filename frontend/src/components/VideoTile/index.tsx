@@ -1,18 +1,9 @@
 import React from "react";
 import { motion, isValidMotionProp } from "framer-motion";
-import { chakra, Box, Skeleton, shouldForwardProp } from "@chakra-ui/react";
+import { chakra, Box, shouldForwardProp, Avatar } from "@chakra-ui/react";
 import { VideoView } from "@whereby.com/browser-sdk";
 
 import "./styles.css";
-
-interface VideoTileProps {
-  id?: string;
-  stream: MediaStream | null;
-  position?: {
-    x?: number;
-    y?: number;
-  };
-}
 
 //https://chakra-ui.com/getting-started/with-framer
 const ChakraBox = chakra(motion.div, {
@@ -23,11 +14,20 @@ const ChakraBox = chakra(motion.div, {
     isValidMotionProp(prop) || shouldForwardProp(prop),
 });
 
-const VideoTile = ({ id, stream, position }: VideoTileProps) => {
+interface VideoTileProps {
+  id?: string;
+  name?: string;
+  stream: MediaStream | undefined;
+  position?: {
+    x?: number;
+    y?: number;
+  };
+}
+
+const VideoTile = ({ id, name, stream, position }: VideoTileProps) => {
   const className = "VideoTile";
   const { x, y } = position || {};
 
-  const Tile = chakra(VideoView);
   return (
     <ChakraBox
       display="flex"
@@ -46,7 +46,6 @@ const VideoTile = ({ id, stream, position }: VideoTileProps) => {
         },
       }}
     >
-      {/* // <VideoView className={className} key={id} stream={stream} /> */}
       {stream ? (
         <Box
           as={VideoView}
@@ -58,9 +57,9 @@ const VideoTile = ({ id, stream, position }: VideoTileProps) => {
           objectFit="cover"
         ></Box>
       ) : (
-        <Skeleton height="240px" width="240px" />
+        <Avatar size="xl" name={name} />
       )}
-      <span className={`${className}__name`}>Participant {id}</span>
+      <span className={`${className}__name`}>{name}</span>
     </ChakraBox>
   );
 };
