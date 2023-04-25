@@ -10,11 +10,12 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 
 import VideoTile from "../../components/VideoTile";
 import { WHEREBY_ROOM } from "../../config/constants";
+import useQuizGame from "../../useQuizGame";
 
 const LobbyView = ({ localMedia }: any) => {
   const [tilePositions, setTilePositions] = useState({});
 
-  const { state, actions, components } = useRoomConnection(WHEREBY_ROOM, {
+  const roomConnection = useRoomConnection(WHEREBY_ROOM, {
     localMedia,
     logger: console,
     localMediaConstraints: {
@@ -22,9 +23,13 @@ const LobbyView = ({ localMedia }: any) => {
       video: true,
     },
   });
+  const { state: quizState, actions: quizActions } =
+    useQuizGame(roomConnection);
+
+  console.log("Quiz screen", quizState.screen);
 
   const { localStream } = localMedia.state;
-
+  const { state, actions, components } = roomConnection;
   const { roomConnectionStatus, remoteParticipants } = state;
 
   console.log(remoteParticipants);

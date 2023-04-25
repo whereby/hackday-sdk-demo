@@ -3362,10 +3362,10 @@
     "@webassemblyjs/ast" "1.11.5"
     "@xtuc/long" "4.2.2"
 
-"@whereby.com/browser-sdk@2.0.0-alpha7":
-  version "2.0.0-alpha7"
-  resolved "https://registry.yarnpkg.com/@whereby.com/browser-sdk/-/browser-sdk-2.0.0-alpha7.tgz#fe08b8404113da40f33fba402e0881d8fbc47556"
-  integrity sha512-9BTPSz/67SgkD9xHpIUa0c+vev8kySdFXNPARVt6rWiVsnfNSUzGhNvbNaCmDynmnOo4Fr4VuKQKb0l50XtCqg==
+"@whereby.com/browser-sdk@2.0.0-alpha8":
+  version "2.0.0-alpha8"
+  resolved "https://registry.yarnpkg.com/@whereby.com/browser-sdk/-/browser-sdk-2.0.0-alpha8.tgz#bc7c4d5fde36ec6ff02776e406964f96dcbbeef5"
+  integrity sha512-LIQR7XFOHS4ypNTkd5BLrentFvSpxxXByEFn7xo8UVk3yOxZlqXqit5xfpzWQqR75nBy98L6Rz4d1/1PuEVHuA==
   dependencies:
     "@swc/helpers" "^0.3.13"
     "@whereby/jslib-media" whereby/jslib-media.git#0.2.0
@@ -3374,7 +3374,7 @@
     btoa "^1.2.1"
     heresy "^1.0.4"
 
-"@whereby/jslib-media@whereby/jslib-media.git#0.2.0":
+"@whereby/jslib-media@github:whereby/jslib-media#0.2.0":
   version "0.2.0"
   resolved "https://codeload.github.com/whereby/jslib-media/tar.gz/2e0354ca8c76810e710282f8051e08bde482090f"
   dependencies:
