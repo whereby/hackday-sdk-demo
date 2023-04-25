@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 
 import {
   useLocalMedia,
@@ -6,13 +6,14 @@ import {
   useRoomConnection,
 } from "@whereby.com/browser-sdk";
 
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 
-import { PreCallSetup, SelfView } from "../../components/PreCall";
 import VideoTile from "../../components/VideoTile";
 import { WHEREBY_ROOM } from "../../config/constants";
 
 const LobbyView = ({ localMedia }: any) => {
+  const [tilePositions, setTilePositions] = useState({});
+
   const { state, actions, components } = useRoomConnection(WHEREBY_ROOM, {
     localMedia,
     logger: console,
@@ -33,12 +34,29 @@ const LobbyView = ({ localMedia }: any) => {
         <VideoTile stream={localStream} name={"You"} />
       </Box>
 
-      {remoteParticipants.map((p) => {
-        const { id, stream, displayName } = p;
-        return (
-          <Box key={id}>{<VideoTile stream={stream} name={displayName} />}</Box>
-        );
-      })}
+      <Box>
+        {remoteParticipants.map((p) => {
+          const { id, stream, displayName } = p;
+          return <VideoTile key={id} stream={stream} name={displayName} />;
+        })}
+      </Box>
+
+      <Box>
+        <Button
+          m={2}
+          onClick={() => {
+            setTilePositions({ y: 100 });
+          }}
+        >
+          Shift!
+        </Button>
+        <Flex>
+          <VideoTile stream={localStream} />
+          <VideoTile stream={localStream} position={tilePositions} />
+          <VideoTile stream={localStream} />
+          <VideoTile stream={localStream} position={tilePositions} />
+        </Flex>
+      </Box>
     </Box>
   );
 };

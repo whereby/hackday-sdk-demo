@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Input, Button, Box, Flex } from "@chakra-ui/react";
+import { Input, Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 import VideoTile from "../../components/VideoTile";
 // import { VideoView } from "@whereby.com/browser-sdk";
@@ -10,31 +10,38 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
     localMedia.state;
   const { setCameraDevice, toggleCameraEnabled } = localMedia.actions;
 
-  const className = "PreCall";
-
-  const [tilePositions, setTilePositions] = useState({});
   const [name, setName] = useState("");
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setName(event.target.value);
 
   return (
     <Box>
-      <h1>Pre-call setup</h1>
-      {cameraDevices.map((d) => (
-        <p
-          key={d.deviceId}
-          onClick={() => {
-            if (d.deviceId !== currentCameraDeviceId) {
-              setCameraDevice(d.deviceId);
-            }
-          }}
-        >
-          {d.label}
-        </p>
-      ))}
-      <Box w="50%" p={4} margin="0 auto">
+      <Heading as="h1" mb="3">
+        Game Lobby
+      </Heading>
+      <Text>Waiting for players...</Text>
+
+      <Box my="4">
+        <Heading as="h3" size="md">
+          Device setup
+        </Heading>
+        {cameraDevices.map((d) => (
+          <p
+            key={d.deviceId}
+            onClick={() => {
+              if (d.deviceId !== currentCameraDeviceId) {
+                setCameraDevice(d.deviceId);
+              }
+            }}
+          >
+            {d.label}
+          </p>
+        ))}
+      </Box>
+
+      <Box w="50%" my={4} margin="0 auto">
         <VideoTile stream={localStream} />
-        <Flex justifyContent="center" gap="2">
+        <Flex justifyContent="center" gap="2" mt="4">
           <Input
             w="50%"
             placeholder="Your name..."
@@ -44,30 +51,8 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
           <Button onClick={handleOnReady}>Ready!</Button>
         </Flex>
       </Box>
-      <Button
-        m={2}
-        onClick={() => {
-          setTilePositions({ y: 100 });
-        }}
-      >
-        Shift!
-      </Button>
-      <Flex className={`${className}__video-container`}>
-        <VideoTile stream={localStream} />
-        <VideoTile stream={localStream} position={tilePositions} />
-        <VideoTile stream={localStream} />
-        <VideoTile stream={localStream} position={tilePositions} />
-        {/* <VideoView muted stream={localStream} /> */}
-      </Flex>
     </Box>
   );
-};
-
-const SelfView = ({ localMedia }) => {
-  const { localStream } = localMedia.state;
-
-  // return <VideoView muted stream={localStream} />;
-  return <VideoTile stream={localStream} />;
 };
 
 export default PreCallView;
