@@ -45,7 +45,7 @@ const LobbyView = ({ localMedia }: any) => {
         <Button
           m={2}
           onClick={() => {
-            setTilePositions({ y: 100 });
+            setTilePositions({ y: 400 });
           }}
         >
           Shift!

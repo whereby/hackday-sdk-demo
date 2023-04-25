@@ -1,6 +1,6 @@
-import React from "react";
-import { motion, isValidMotionProp } from "framer-motion";
-import { chakra, Box, shouldForwardProp, Avatar } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { motion, isValidMotionProp, useAnimate } from "framer-motion";
+import { chakra, shouldForwardProp, Box, Avatar, Text } from "@chakra-ui/react";
 import { VideoView } from "@whereby.com/browser-sdk";
 
 import "./styles.css";
@@ -25,8 +25,33 @@ interface VideoTileProps {
 }
 
 const VideoTile = ({ id, name, stream, position }: VideoTileProps) => {
-  const className = "VideoTile";
+  const [scope, animate] = useAnimate();
+
   const { x, y } = position || {};
+
+  const animation = async () => {
+    await animate(scope.current, { rotate: -90 });
+    await animate(scope.current, { scale: 1.5 });
+    await animate(scope.current, { rotate: 0 });
+    await animate(scope.current, { scale: 1 });
+    animate(
+      scope.current,
+      {
+        x: 100,
+      },
+      {
+        repeat: Infinity,
+        repeatType: "mirror",
+        ease: "easeInOut",
+        duration: 1,
+      }
+    );
+  };
+
+  useEffect(() => {
+    animation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ChakraBox
@@ -34,6 +59,7 @@ const VideoTile = ({ id, name, stream, position }: VideoTileProps) => {
       flexDirection="column"
       alignItems="center"
       margin="2"
+      ref={scope}
       animate={{ x, y }}
       whileHover={{ scale: [null, 1.1, 1.05], rotate: 1 }}
       // @ts-ignore no problem in operation, although type error appears.
@@ -59,7 +85,7 @@ const VideoTile = ({ id, name, stream, position }: VideoTileProps) => {
       ) : (
         <Avatar size="xl" name={name} />
       )}
-      <span className={`${className}__name`}>{name}</span>
+      <Text>{name}</Text>
     </ChakraBox>
   );
 };
