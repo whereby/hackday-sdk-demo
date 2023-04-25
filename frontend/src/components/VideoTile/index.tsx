@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 import { motion, isValidMotionProp, useAnimate } from "framer-motion";
-import { chakra, shouldForwardProp, Box, Avatar, Text } from "@chakra-ui/react";
+import {
+  chakra,
+  shouldForwardProp,
+  Box,
+  Avatar,
+  Text,
+  Center,
+} from "@chakra-ui/react";
 import { VideoView } from "@whereby.com/browser-sdk";
 
 import "./styles.css";
@@ -34,24 +41,14 @@ const VideoTile = ({ id, name, stream, position }: VideoTileProps) => {
     await animate(scope.current, { scale: 1.5 });
     await animate(scope.current, { rotate: 0 });
     await animate(scope.current, { scale: 1 });
-    animate(
-      scope.current,
-      {
-        x: 100,
-      },
-      {
-        repeat: Infinity,
-        repeatType: "mirror",
-        ease: "easeInOut",
-        duration: 1,
-      }
-    );
   };
 
   useEffect(() => {
-    animation();
+    if (stream) {
+      animation();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [stream]);
 
   return (
     <ChakraBox
@@ -77,13 +74,15 @@ const VideoTile = ({ id, name, stream, position }: VideoTileProps) => {
           as={VideoView}
           key={id}
           stream={stream}
-          height="240px"
-          width="240px"
+          h="240px"
+          w="240px"
           borderRadius="16px"
           objectFit="cover"
-        ></Box>
+        />
       ) : (
-        <Avatar size="xl" name={name} />
+        <Center h="240px" w="240px">
+          <Avatar size="xl" name={name} />
+        </Center>
       )}
       <Text>{name}</Text>
     </ChakraBox>

@@ -3374,7 +3374,7 @@
     btoa "^1.2.1"
     heresy "^1.0.4"
 
-"@whereby/jslib-media@github:whereby/jslib-media#0.2.0":
+"@whereby/jslib-media@whereby/jslib-media.git#0.2.0":
   version "0.2.0"
   resolved "https://codeload.github.com/whereby/jslib-media/tar.gz/2e0354ca8c76810e710282f8051e08bde482090f"
   dependencies:

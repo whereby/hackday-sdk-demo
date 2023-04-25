@@ -16,11 +16,6 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
 
   return (
     <Box>
-      <Heading as="h1" mb="3">
-        Game Lobby
-      </Heading>
-      <Text>Waiting for players...</Text>
-
       <Box my="4">
         <Heading as="h3" size="md">
           Device setup

@@ -6,7 +6,7 @@ import {
   useRoomConnection,
 } from "@whereby.com/browser-sdk";
 
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 import VideoTile from "../../components/VideoTile";
 import { WHEREBY_ROOM } from "../../config/constants";
@@ -35,16 +35,21 @@ const LobbyView = ({ localMedia }: any) => {
   console.log(remoteParticipants);
   return (
     <Box>
+      <Heading as="h1" mb="3">
+        Game Lobby
+      </Heading>
+      <Text>Waiting for players...</Text>
+
       <Box>
         <VideoTile stream={localStream} name={"You"} />
       </Box>
 
-      <Box>
+      <Flex>
         {remoteParticipants.map((p) => {
           const { id, stream, displayName } = p;
           return <VideoTile key={id} stream={stream} name={displayName} />;
         })}
-      </Box>
+      </Flex>
 
       <Box>
         <Button
