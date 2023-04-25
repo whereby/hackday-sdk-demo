@@ -1,73 +1,77 @@
 import { useState } from "react";
-import { useLocalMedia, VideoView } from "@whereby.com/browser-sdk";
+import { motion } from "framer-motion";
 
-import reactLogo from "./assets/react.svg";
+import {
+  useLocalMedia,
+  VideoView,
+  useRoomConnection,
+} from "@whereby.com/browser-sdk";
+import { PreCallSetup, SelfView } from "./components/PreCall";
 
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 const WHEREBY_ROOM =
   "https://funtimes.whereby.com/quiz-app8b84481f-02ad-41d3-86dd-05c537e00ed9";
 
-const PreCall = () => {
-  const localMedia = useLocalMedia({ audio: false, video: true });
+const VideoCall = ({ localMedia }: any) => {
+  const { state, actions, components } = useRoomConnection(WHEREBY_ROOM, {
+    localMedia,
+    logger: console,
+    localMediaConstraints: {
+      audio: false,
+      video: true,
+    },
+  });
 
-  // console.log(localMedia);
+  const { roomConnectionStatus, remoteParticipants } = state;
+  console.log(roomConnectionStatus);
 
-  // const { currentCameraDeviceId, cameraDevices, localStream } =
-  // localMedia.state;
-  // const { setCameraDevice, toggleCameraEnabled } = localMedia.actions;
-  // const { VideoView } = components;
+  // const { toggleCamera, toggleMicrophone } = actions;
 
-  // const { components } = VideoView;
+  console.log(roomConnectionStatus);
 
   return (
-    <div className="preCallView">
-      hehe
-      {/* Render any UI, making use of state
-      {cameraDevices.map((d) => (
-        <p
-          key={d.deviceId}
-          onClick={() => {
-            if (d.deviceId !== currentCameraDeviceId) {
-              setCameraDevice(d.deviceId);
-            }
-          }}
-        >
-          {d.label}
-        </p>
+    <div className="videoGrid">
+      <div>
+        <SelfView localMedia={localMedia}></SelfView>
+        <span>you</span>
+      </div>
+
+      {remoteParticipants.map((p) => (
+        <>
+          {p.stream && (
+            <div>
+              <motion.div animate={{ x: 100 }} whileHover={{ scale: 1.2 }}>
+                <VideoView key={p.id} stream={p.stream} />
+                <span>Participant {p.id}</span>
+              </motion.div>
+            </div>
+          )}
+        </>
       ))}
-      <VideoView muted stream={localStream} /> */}
     </div>
   );
 };
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [isConnected, setIsConnected] = useState(false);
+
+  const localMedia = useLocalMedia({ audio: false, video: true });
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="App">
+      <main>
+        {isConnected ? (
+          <VideoCall localMedia={localMedia} />
+        ) : (
+          <PreCallSetup localMedia={localMedia} />
+        )}
+
+        <button onClick={() => setIsConnected(!isConnected)}>
+          {isConnected ? "Disconnect" : "All good, connect me now!"}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      </main>
+    </div>
   );
 }
 
