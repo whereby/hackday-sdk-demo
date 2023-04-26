@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
@@ -25,9 +25,9 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
   const MotionFlex = motion(Flex);
 
   return (
-    <MotionFlex>
+    <MotionFlex gap="4">
       <VideoTile stream={localStream} name={"You"} hasAnswered={hasAnswered} />
-      {remoteParticipants.map((participant) => {
+      {remoteParticipants.map((participant, i) => {
         const { id, stream, displayName } = participant;
         const hasParticipantAnswered = !!(quizState.currentAnswers || {})[id];
         console.log(hasParticipantAnswered);
@@ -45,4 +45,4 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
   );
 };
 
-export default Participants;
+export default memo(Participants);

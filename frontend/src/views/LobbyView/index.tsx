@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
+import Title from "../../components/Title";
 import { GameActions } from "../../useQuizGame";
 
 interface LobbyViewProps {
@@ -46,16 +47,18 @@ const LobbyView = ({ playerCount, quizActions }: LobbyViewProps) => {
   };
 
   return (
-    <Box>
+    <Box
+      height="100%"
+      // background="purple.200"
+    >
       <Heading as="h1" mb="3">
-        Game Lobby
+        <Title>Game Lobby</Title>
       </Heading>
       <Text>Waiting for players...</Text>
 
       <Flex
         flexDirection="column"
         p="10"
-        background="gray.200"
         h="300px"
         w="100%"
         overflow="hidden"

@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { Box, Avatar, AvatarBadge, Text, Center } from "@chakra-ui/react";
 import { VideoView } from "@whereby.com/browser-sdk";
@@ -29,6 +29,11 @@ const VideoTile = ({
 
   const { x, y } = position || {};
 
+  const popAnimation = useCallback(async () => {
+    await animate(scope.current, { scale: 1.5 });
+    await animate(scope.current, { scale: 1 });
+  }, [animate, scope]);
+
   const rotateAnimation = useCallback(async () => {
     // await animate(scope.current, { rotate: -90 });
     // await animate(scope.current, { scale: 1.5 });
@@ -40,6 +45,11 @@ const VideoTile = ({
     await animate(scope.current, { rotate: -90 });
     await animate(scope.current, { rotate: 0 });
   }, [animate, scope]);
+
+  useEffect(() => {
+    popAnimation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (stream) rotateAnimation();
@@ -70,8 +80,32 @@ const VideoTile = ({
         },
       }}
     >
-      {stream ? (
-        <Box
+      <Center
+        h="240px"
+        w="240px"
+        background="gray.200"
+        borderRadius="16px"
+        borderColor="green.500"
+        borderWidth={hasAnswered ? "8px" : "0px"}
+        overflow="hidden"
+      >
+        {stream ? (
+          <Box
+            as={VideoView}
+            key={id}
+            stream={stream}
+            w="100%"
+            h="100%"
+            objectFit="cover"
+          />
+        ) : (
+          <Avatar size="xl" name={name}>
+            {hasAnswered && <AvatarBadge boxSize="1.25em" bg="green.500" />}
+          </Avatar>
+        )}
+      </Center>
+      {/* {stream ? (
+        <Center
           as={VideoView}
           key={id}
           stream={stream}
@@ -81,14 +115,14 @@ const VideoTile = ({
           objectFit="cover"
           borderColor="green.500"
           borderWidth={hasAnswered ? "8px" : "0px"}
-        ></Box>
+        ></Center>
       ) : (
         <Center h="240px" w="240px">
           <Avatar size="xl" name={name}>
             {hasAnswered && <AvatarBadge boxSize="1.25em" bg="green.500" />}
           </Avatar>
         </Center>
-      )}
+      )} */}
       <Text>{name}</Text>
     </ChakraBox>
   );

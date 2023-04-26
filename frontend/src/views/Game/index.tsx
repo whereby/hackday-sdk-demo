@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { Flex, Box } from "@chakra-ui/react";
 import { useRoomConnection } from "@whereby.com/browser-sdk";
 
 import Participants from "../../components/Participants";
@@ -53,10 +53,14 @@ const Game = ({ localMedia }: LobbyViewProps) => {
   };
 
   return (
-    <>
-      <CurrentScreen />
-      <Participants roomConnection={roomConnection} quizState={quizState} />
-    </>
+    <Flex flexDirection="column" height="100%" background="red.200">
+      <Box flexGrow="2" height="100%">
+        <CurrentScreen />
+      </Box>
+      <Box flexGrow="1" p="4" background="white">
+        <Participants roomConnection={roomConnection} quizState={quizState} />
+      </Box>
+    </Flex>
   );
 };
 //   <VideoView stream={participant.stream} style={{position: "absolute", top: 2, left: 2}}
