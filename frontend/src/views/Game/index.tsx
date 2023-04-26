@@ -8,7 +8,6 @@ import { WHEREBY_ROOM } from "../../config/constants";
 
 import useQuizGame, { LocalMediaRef } from "../../useQuizGame";
 import QuestionView from "../QuestionView";
-import EndView from "../EndView";
 
 interface LobbyViewProps {
   localMedia: LocalMediaRef;
@@ -50,8 +49,6 @@ const Game = ({ localMedia }: LobbyViewProps) => {
             roomConnection={roomConnection}
           />
         );
-      case "end":
-        return <EndView />;
       default:
         return <div>Not implemented</div>;
     }
