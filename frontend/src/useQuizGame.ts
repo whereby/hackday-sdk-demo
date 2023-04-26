@@ -27,7 +27,7 @@ interface GameState {
   screen: "welcome" | "question" | "end";
   currentAnswers: {
     [participantId: string]: string;
-  };
+  } | null;
   currentQuestion: Question | null;
   revealAnswers: boolean;
 }
@@ -61,12 +61,35 @@ type GameEvents =
 
 const initialState: GameState = {
   isQuizMaster: false,
-  currentAnswers: {},
+  currentAnswers: null,
   currentQuestion: null,
   revealAnswers: false,
   scores: {},
   screen: "welcome",
 };
+
+function calculateScores(state: GameState): {
+  [participantId: string]: number;
+} {
+  const { currentQuestion, scores, currentAnswers = {} } = state;
+  if (!(currentQuestion && currentAnswers)) {
+    return scores;
+  }
+
+  const newScores = {
+    ...scores,
+  };
+
+  Object.keys(currentAnswers).forEach((participantId) => {
+    const answer = currentAnswers[participantId];
+    const participantScore = scores[participantId] || 0;
+    newScores[participantId] =
+      participantScore +
+      (answer === currentQuestion.correctAlternative ? 1 : 0);
+  });
+
+  return newScores;
+}
 
 function reducer(state: GameState, event: GameEvents): GameState {
   switch (event.type) {
@@ -77,19 +100,20 @@ function reducer(state: GameState, event: GameEvents): GameState {
         currentAnswers: {},
         revealAnswers: false,
         currentQuestion: event.payload,
-        // TODO: Calculate scores from prev question
       };
     case "ANSWER":
       return {
         ...state,
         currentAnswers: {
           ...state.currentAnswers,
+          [event.senderId]: event.payload,
         },
       };
     case "REVEAL":
       return {
         ...state,
         revealAnswers: true,
+        scores: calculateScores(state),
       };
     case "END":
       return {
