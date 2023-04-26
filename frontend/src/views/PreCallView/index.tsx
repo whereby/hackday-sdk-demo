@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Input, Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 import VideoTile from "../../components/VideoTile";
-// import { VideoView } from "@whereby.com/browser-sdk";
+import { chakraMotionElement } from "../../utils/useChakraMotion";
 
 const PreCallView = ({ localMedia, handleOnReady }) => {
   const { currentCameraDeviceId, cameraDevices, localStream } =

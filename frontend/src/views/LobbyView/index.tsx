@@ -1,41 +1,48 @@
 import { useState } from "react";
-
-import {
-  useLocalMedia,
-  VideoView,
-  useRoomConnection,
-} from "@whereby.com/browser-sdk";
+import { motion } from "framer-motion";
 
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import VideoTile from "../../components/VideoTile";
-import { WHEREBY_ROOM } from "../../config/constants";
-import useQuizGame from "../../useQuizGame";
-import QuestionView from "../QuestionView";
-import { motion } from "framer-motion";
+interface LobbyViewProps {
+  playerCount: number;
+  onGameReady: () => void;
+}
 
-const LobbyView = ({ localMedia}: any) => {
-  const [tilePositions, setTilePositions] = useState({});
+const LobbyView = ({ playerCount, onGameReady }: LobbyViewProps) => {
+  const [buttonClicked, setButtonClicked] = useState(false);
 
-  const roomConnection = useRoomConnection(WHEREBY_ROOM, {
-    localMedia,
-    logger: console,
-    localMediaConstraints: {
-      audio: false,
-      video: true,
+  const MotionButton = motion(Button);
+
+  // Just playing around with variants here
+  const buttonVariants = {
+    hover: {
+      scale: 1.25,
+      backgroundColor: "#38A169",
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        mass: 1,
+        damping: 1,
+      },
     },
-  });
-  const { state: quizState, actions: quizActions } =
-    useQuizGame(roomConnection);
+    pressed: {
+      scale: 1.2,
+    },
+    clicked: {
+      transition: {
+        type: "tween",
+        ease: "anticipate",
+        duration: 0.25,
+      },
+    },
+    notClicked: {},
+  };
 
-  console.log("Quiz screen", quizState.screen);
+  const handleOnReady = () => {
+    setButtonClicked(true);
+    onGameReady();
+  };
 
-  const { localStream } = localMedia.state;
-  const { state, actions, components } = roomConnection;
-  const { roomConnectionStatus, remoteParticipants } = state;
-  const ChakraBox = motion(Box);
-
-  console.log(remoteParticipants);
   return (
     <Box>
       <Heading as="h1" mb="3">
@@ -43,37 +50,35 @@ const LobbyView = ({ localMedia}: any) => {
       </Heading>
       <Text>Waiting for players...</Text>
 
-      <Box>
-        <VideoTile stream={localStream} name={"You"} />
-      </Box>
-
-      <Flex>
-        {remoteParticipants.map((p) => {
-          const { id, stream, displayName } = p;
-          return <VideoTile key={id} stream={stream} name={displayName} />;
-        })}
-      </Flex>
-
-      <Box>
-        <Button
-          m={2}
-          onClick={() => {
-            setTilePositions({ y: 400 });
-          }}
+      <Flex
+        flexDirection="column"
+        p="10"
+        background="gray.200"
+        h="300px"
+        w="100%"
+        overflow="hidden"
+        color="white"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Text fontSize="2xl" fontWeight="bold" mb="4">
+          {playerCount} Players
+        </Text>
+        <MotionButton
+          onClick={handleOnReady}
+          variants={buttonVariants}
+          size="md"
+          animate={buttonClicked ? "clicked" : "notClicked"}
+          whileHover="hover"
+          whileTap="pressed"
+          py="10"
+          fontSize="2xl"
+          background="green.500"
+          w="50%"
         >
-          Shift!
-        </Button>
-        <Flex>
-          <VideoTile stream={localStream} />
-          <VideoTile stream={localStream} position={tilePositions} />
-          <VideoTile stream={localStream} />
-          <VideoTile stream={localStream} position={tilePositions} />
-        </Flex>
-      </Box>
-      <ChakraBox>
-      <QuestionView quizState={quizState} localMedia={localMedia} roomConnection={roomConnection} quizActions={quizActions}/>
-      </ChakraBox>
-
+          {buttonClicked ? "Let's go!" : "Start Game"}
+        </MotionButton>
+      </Flex>
     </Box>
   );
 };

@@ -1,26 +1,9 @@
-import { useEffect } from "react";
-import { motion, isValidMotionProp, useAnimate } from "framer-motion";
-import {
-  chakra,
-  shouldForwardProp,
-  Box,
-  Avatar,
-  Text,
-  Center,
-  AvatarBadge,
-} from "@chakra-ui/react";
+import { useEffect, useCallback } from "react";
+import { motion, useAnimate } from "framer-motion";
+import { Box, Avatar, AvatarBadge, Text, Center } from "@chakra-ui/react";
 import { VideoView } from "@whereby.com/browser-sdk";
 
 import "./styles.css";
-
-//https://chakra-ui.com/getting-started/with-framer
-const ChakraBox = chakra(motion.div, {
-  /**
-   * Allow motion props and non-Chakra props to be forwarded.
-   */
-  shouldForwardProp: (prop) =>
-    isValidMotionProp(prop) || shouldForwardProp(prop),
-});
 
 interface VideoTileProps {
   id?: string;
@@ -31,26 +14,33 @@ interface VideoTileProps {
     y?: number;
   };
   isAnsweredBadge?: boolean;
+  animation?: string;
 }
 
-const VideoTile = ({ id, name, stream, position, isAnsweredBadge }: VideoTileProps) => {
+const VideoTile = ({
+  id,
+  name,
+  stream,
+  position,
+  animation,
+  isAnsweredBadge,
+}: VideoTileProps) => {
   const [scope, animate] = useAnimate();
 
   const { x, y } = position || {};
 
-  const animation = async () => {
+  const rotateAnimation = useCallback(async () => {
     await animate(scope.current, { rotate: -90 });
     await animate(scope.current, { scale: 1.5 });
     await animate(scope.current, { rotate: 0 });
     await animate(scope.current, { scale: 1 });
-  };
+  }, [animate, scope]);
 
   useEffect(() => {
-    if (stream) {
-      animation();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stream]);
+    if (stream) rotateAnimation();
+  }, [stream, rotateAnimation]);
+
+  const ChakraBox = motion(Box);
 
   return (
     <ChakraBox
@@ -83,7 +73,9 @@ const VideoTile = ({ id, name, stream, position, isAnsweredBadge }: VideoTilePro
         />
       ) : (
         <Center h="240px" w="240px">
-          <Avatar size="xl" name={name}>{isAnsweredBadge && <AvatarBadge boxSize='1.25em' bg='green.500' />}</Avatar>
+          <Avatar size="xl" name={name}>
+            {isAnsweredBadge && <AvatarBadge boxSize="1.25em" bg="green.500" />}
+          </Avatar>
         </Center>
       )}
       <Text>{name}</Text>
