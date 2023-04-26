@@ -4,10 +4,11 @@
  */
 
 import { useEffect, useReducer } from "react";
-import { useRoomConnection } from "@whereby.com/browser-sdk";
+import { useLocalMedia, useRoomConnection } from "@whereby.com/browser-sdk";
 
 // This is a hack, need to expose this type directly from the SDK
-type RoomConnectionRef = ReturnType<typeof useRoomConnection>;
+export type RoomConnectionRef = ReturnType<typeof useRoomConnection>;
+export type LocalMediaRef = ReturnType<typeof useLocalMedia>;
 
 interface Question {
   question: string;

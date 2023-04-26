@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { Box, Avatar, AvatarBadge, Text, Center } from "@chakra-ui/react";
 import { VideoView } from "@whereby.com/browser-sdk";
@@ -29,27 +29,16 @@ const VideoTile = ({
 
   const { x, y } = position || {};
 
-  const rotateAnimation = async () => {
+  const rotateAnimation = useCallback(async () => {
     await animate(scope.current, { rotate: -90 });
     await animate(scope.current, { scale: 1.5 });
     await animate(scope.current, { rotate: 0 });
     await animate(scope.current, { scale: 1 });
-  };
-
-  console.log(animation);
-  useEffect(() => {
-    // if (stream) {
-    rotateAnimation();
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [animate, scope]);
 
   useEffect(() => {
-    if (animation === "fly-out") {
-      rotateAnimation();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animation]);
+    if (stream) rotateAnimation();
+  }, [stream, rotateAnimation]);
 
   const ChakraBox = motion(Box);
 

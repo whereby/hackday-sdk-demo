@@ -6,10 +6,8 @@ import { isValidMotionProp } from "framer-motion";
  * Allow motion props and non-Chakra props to be forwarded.
  */
 const chakraMotionElement = (motionElementType) => {
-  console.log(motionElementType);
   return chakra(motionElementType, {
     shouldForwardProp: (prop) => {
-      console.log(prop);
       return isValidMotionProp(prop) || shouldForwardProp(prop);
     },
   });

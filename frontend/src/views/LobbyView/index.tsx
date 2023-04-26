@@ -1,83 +1,46 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-import {
-  useLocalMedia,
-  VideoView,
-  useRoomConnection,
-} from "@whereby.com/browser-sdk";
-
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import VideoTile from "../../components/VideoTile";
-import { WHEREBY_ROOM } from "../../config/constants";
-import useQuizGame from "../../useQuizGame";
-import QuestionView from "../QuestionView";
-
-import { chakraMotionElement } from "../../utils/useChakraMotion";
-
 interface LobbyViewProps {
-  localMedia: any;
+  playerCount: number;
   onGameReady: () => void;
 }
 
-const LobbyView = ({ localMedia, onGameReady }: LobbyViewProps) => {
-  const [tilePositions, setTilePositions] = useState({});
+const LobbyView = ({ playerCount, onGameReady }: LobbyViewProps) => {
   const [buttonClicked, setButtonClicked] = useState(false);
-  const [animation, setAnimation] = useState("");
-
-  const roomConnection = useRoomConnection(WHEREBY_ROOM, {
-    localMedia,
-    logger: console,
-    localMediaConstraints: {
-      audio: false,
-      video: true,
-    },
-  });
-  const { state: quizState, actions: quizActions } =
-    useQuizGame(roomConnection);
-
-  console.log("Quiz screen", quizState.screen);
-
-  const { localStream } = localMedia.state;
-  const { state, actions, components } = roomConnection;
-  const { roomConnectionStatus, remoteParticipants } = state;
-  const ChakraBox = motion(Box);
 
   const MotionButton = motion(Button);
 
-  const buttonVariants = {
-    hover: {
-      scale: 1.25,
-      backgroundColor: "#38A169",
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        mass: 1,
-        damping: 1,
-      },
-    },
-    pressed: {
-      scale: 1.2,
-    },
-    clicked: {
-      transition: {
-        type: "tween",
-        ease: "anticipate",
-        duration: 0.25,
-      },
-    },
-    notClicked: {},
-  };
+  //   const buttonVariants = {
+  //     hover: {
+  //       scale: 1.25,
+  //       backgroundColor: "#38A169",
+  //       transition: {
+  //         type: "spring",
+  //         stiffness: 200,
+  //         mass: 1,
+  //         damping: 1,
+  //       },
+  //     },
+  //     pressed: {
+  //       scale: 1.2,
+  //     },
+  //     clicked: {
+  //       transition: {
+  //         type: "tween",
+  //         ease: "anticipate",
+  //         duration: 0.25,
+  //       },
+  //     },
+  //     notClicked: {},
+  //   };
 
   const handleOnReady = () => {
-    console.log("handleOnReady");
     setButtonClicked(true);
     onGameReady();
-    setAnimation("fly-out");
   };
-
-  const numParticipants = remoteParticipants.length + 1;
 
   return (
     <Box>
@@ -85,44 +48,32 @@ const LobbyView = ({ localMedia, onGameReady }: LobbyViewProps) => {
         Game Lobby
       </Heading>
       <Text>Waiting for players...</Text>
-      <Flex flexWrap="wrap">
-        <VideoTile stream={localStream} name={"You"} animation={animation} />
-        <VideoTile stream={localStream} name={"You"} animation={animation} />
-        <VideoTile stream={localStream} name={"You"} animation={animation} />
-        <VideoTile stream={localStream} name={"You"} animation={animation} />
-        {remoteParticipants.map((p) => {
-          const { id, stream, displayName } = p;
-          return <VideoTile key={id} stream={stream} name={displayName} />;
-        })}
-      </Flex>
 
-      {/* TODO: potentially move this control / button pane out */}
       <Flex
         flexDirection="column"
-        position="absolute"
         p="10"
-        bottom="0"
-        right="0"
-        background="purple.500"
+        background="gray.200"
         h="300px"
-        w="25%"
-        borderTopLeftRadius="16px"
+        w="100%"
         overflow="hidden"
         color="white"
+        justifyContent="center"
+        alignItems="center"
       >
         <Text fontSize="2xl" fontWeight="bold" mb="4">
-          {numParticipants} Players
+          {playerCount} Players
         </Text>
         <MotionButton
           onClick={handleOnReady}
-          variants={buttonVariants}
-          size="lg"
+          //   variants={buttonVariants}
+          size="md"
           animate={buttonClicked ? "clicked" : "notClicked"}
           whileHover="hover"
           whileTap="pressed"
           py="10"
           fontSize="2xl"
           background="green.500"
+          w="50%"
         >
           {buttonClicked ? "Let's go!" : "Start Game"}
         </MotionButton>
