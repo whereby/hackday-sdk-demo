@@ -4,6 +4,7 @@ import QuestionCard from "../../components/QuestionCard";
 import VideoTile from "../../components/VideoTile";
 import { GameActions, GameState } from "../../useQuizGame";
 import { useRoomConnection } from "@whereby.com/browser-sdk";
+import { current } from "@reduxjs/toolkit";
 type RoomConnectionRef = ReturnType<typeof useRoomConnection>;
 
 export default function QuestionView({
@@ -23,17 +24,8 @@ export default function QuestionView({
 
   const shouldReveal = quizState.revealAnswers;
   const participantId = roomConnection.state.localParticipant?.id || "unknown";
-  const hasAnswered = !!(
-    quizState.currentAnswers && quizState.currentAnswers[participantId]
-  );
-
-  if (shouldReveal) {
-    return <p>Reveal answers!</p>;
-  }
-
-  if (hasAnswered) {
-    return <p>Answered!</p>;
-  }
+  const currentAnswer = quizState?.currentAnswers?.[participantId]?.["alternative"] ?? null;
+  console.log("Current answer",currentAnswer)
 
   return (
     <Box
@@ -52,7 +44,8 @@ export default function QuestionView({
           return (
             <AnswerCard
               key={k}
-              locked={hasAnswered}
+              locked={!!currentAnswer}
+              isSelected={currentAnswer === k}
               answerText={quizState.currentQuestion?.alternatives[k]}
               onSelected={() => quizActions.postAnswer(k)}
             ></AnswerCard>
