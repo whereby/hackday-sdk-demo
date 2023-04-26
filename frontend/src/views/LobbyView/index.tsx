@@ -3,12 +3,14 @@ import { motion } from "framer-motion";
 
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
+import { GameActions } from "../../useQuizGame";
+
 interface LobbyViewProps {
   playerCount: number;
-  onGameReady: () => void;
+  quizActions: GameActions;
 }
 
-const LobbyView = ({ playerCount, onGameReady }: LobbyViewProps) => {
+const LobbyView = ({ playerCount, quizActions }: LobbyViewProps) => {
   const [buttonClicked, setButtonClicked] = useState(false);
 
   const MotionButton = motion(Button);
@@ -40,7 +42,7 @@ const LobbyView = ({ playerCount, onGameReady }: LobbyViewProps) => {
 
   const handleOnReady = () => {
     setButtonClicked(true);
-    onGameReady();
+    quizActions.start();
   };
 
   return (

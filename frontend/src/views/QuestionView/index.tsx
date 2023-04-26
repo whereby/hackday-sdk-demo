@@ -63,20 +63,18 @@ export default function QuestionView({
   );
 }
 
-/**
- * <Flex alignItems="center" justifyContent="center">
-        <VideoTile stream={localStream} isAnsweredBadge={hasAnswered} />
-        {remoteParticipants.map((p) => {
-          const { id, stream, displayName } = p;
-          const hasParticipantAnswered = !!(quizState.currentAnswers || {})[id];
-          return (
-            <VideoTile
-              key={id}
-              stream={stream}
-              name={displayName}
-              isAnsweredBadge={hasParticipantAnswered}
-            />
-          );
-        })}
-      </Flex>
- */
+// <Flex alignItems="center" justifyContent="center">
+//   <VideoTile stream={localStream} hasAnswered={hasAnswered} />
+//   {remoteParticipants.map((p) => {
+//     const { id, stream, displayName } = p;
+//     const hasParticipantAnswered = !!(quizState.currentAnswers || {})[id];
+//     return (
+//       <VideoTile
+//         key={id}
+//         stream={stream}
+//         name={displayName}
+//         hasAnswered={hasParticipantAnswered}
+//       />
+//     );
+//   })}
+// </Flex>

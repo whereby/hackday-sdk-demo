@@ -6,6 +6,7 @@
 import { useEffect, useReducer } from "react";
 import { useLocalMedia, useRoomConnection } from "@whereby.com/browser-sdk";
 
+import questions from "./events/questions";
 // This is a hack, need to expose this type directly from the SDK
 export type RoomConnectionRef = ReturnType<typeof useRoomConnection>;
 export type LocalMediaRef = ReturnType<typeof useLocalMedia>;
@@ -34,6 +35,7 @@ export interface GameState {
 }
 
 export interface GameActions {
+  start(): void;
   end(): void;
   postAnswer(alternative: string): void;
   postQuestion(question: Question): void;
@@ -151,6 +153,11 @@ export default function useQuizGame(roomConnection: RoomConnectionRef): {
   return {
     state,
     actions: {
+      start() {
+        // TODO: Check if user is quiz master?
+        // Separate type or just straight to question
+        roomActions.sendChatMessage(JSON.stringify(questions[0]));
+      },
       end() {
         if (!state.isQuizMaster) {
           console.warn("Not authorized to end quiz");
@@ -160,17 +167,6 @@ export default function useQuizGame(roomConnection: RoomConnectionRef): {
         roomActions.sendChatMessage(
           JSON.stringify({
             type: "END",
-          })
-        );
-      },
-
-      postAnswer(alternative: string) {
-        roomActions.sendChatMessage(
-          JSON.stringify({
-            type: "ANSWER",
-            payload: {
-              alternative,
-            },
           })
         );
       },
@@ -186,6 +182,17 @@ export default function useQuizGame(roomConnection: RoomConnectionRef): {
           JSON.stringify({
             type: "QUESTION",
             payload: question,
+          })
+        );
+      },
+
+      postAnswer(alternative: string) {
+        roomActions.sendChatMessage(
+          JSON.stringify({
+            type: "ANSWER",
+            payload: {
+              alternative,
+            },
           })
         );
       },

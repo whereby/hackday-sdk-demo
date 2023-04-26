@@ -13,7 +13,7 @@ interface VideoTileProps {
     x?: number;
     y?: number;
   };
-  isAnsweredBadge?: boolean;
+  hasAnswered?: boolean;
   animation?: string;
 }
 
@@ -23,22 +23,31 @@ const VideoTile = ({
   stream,
   position,
   animation,
-  isAnsweredBadge,
+  hasAnswered,
 }: VideoTileProps) => {
   const [scope, animate] = useAnimate();
 
   const { x, y } = position || {};
 
   const rotateAnimation = useCallback(async () => {
+    // await animate(scope.current, { rotate: -90 });
+    // await animate(scope.current, { scale: 1.5 });
+    // await animate(scope.current, { rotate: 0 });
+    // await animate(scope.current, { scale: 1 });
+  }, [animate, scope]);
+
+  const answeredAnimation = useCallback(async () => {
     await animate(scope.current, { rotate: -90 });
-    await animate(scope.current, { scale: 1.5 });
     await animate(scope.current, { rotate: 0 });
-    await animate(scope.current, { scale: 1 });
   }, [animate, scope]);
 
   useEffect(() => {
     if (stream) rotateAnimation();
   }, [stream, rotateAnimation]);
+
+  useEffect(() => {
+    if (hasAnswered) answeredAnimation();
+  }, [hasAnswered, answeredAnimation]);
 
   const ChakraBox = motion(Box);
 
@@ -70,11 +79,13 @@ const VideoTile = ({
           w="240px"
           borderRadius="16px"
           objectFit="cover"
-        />
+          borderColor="green.500"
+          borderWidth={hasAnswered ? "8px" : "0px"}
+        ></Box>
       ) : (
         <Center h="240px" w="240px">
           <Avatar size="xl" name={name}>
-            {isAnsweredBadge && <AvatarBadge boxSize="1.25em" bg="green.500" />}
+            {hasAnswered && <AvatarBadge boxSize="1.25em" bg="green.500" />}
           </Avatar>
         </Center>
       )}

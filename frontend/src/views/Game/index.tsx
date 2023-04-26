@@ -14,8 +14,6 @@ interface LobbyViewProps {
 }
 
 const Game = ({ localMedia }: LobbyViewProps) => {
-  const [gameStarted, setGameStarted] = useState(false);
-
   const roomConnection = useRoomConnection(WHEREBY_ROOM, {
     localMedia,
     logger: console,
@@ -36,8 +34,8 @@ const Game = ({ localMedia }: LobbyViewProps) => {
       case "welcome":
         return (
           <LobbyView
+            quizActions={quizActions}
             playerCount={remoteParticipants.length + 1}
-            onGameReady={() => setGameStarted(true)}
           />
         );
       case "question":
@@ -57,7 +55,7 @@ const Game = ({ localMedia }: LobbyViewProps) => {
   return (
     <>
       <CurrentScreen />
-      <Participants roomConnection={roomConnection} />
+      <Participants roomConnection={roomConnection} quizState={quizState} />
     </>
   );
 };
