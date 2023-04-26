@@ -13,29 +13,30 @@ const LobbyView = ({ playerCount, onGameReady }: LobbyViewProps) => {
 
   const MotionButton = motion(Button);
 
-  //   const buttonVariants = {
-  //     hover: {
-  //       scale: 1.25,
-  //       backgroundColor: "#38A169",
-  //       transition: {
-  //         type: "spring",
-  //         stiffness: 200,
-  //         mass: 1,
-  //         damping: 1,
-  //       },
-  //     },
-  //     pressed: {
-  //       scale: 1.2,
-  //     },
-  //     clicked: {
-  //       transition: {
-  //         type: "tween",
-  //         ease: "anticipate",
-  //         duration: 0.25,
-  //       },
-  //     },
-  //     notClicked: {},
-  //   };
+  // Just playing around with variants here
+  const buttonVariants = {
+    hover: {
+      scale: 1.25,
+      backgroundColor: "#38A169",
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        mass: 1,
+        damping: 1,
+      },
+    },
+    pressed: {
+      scale: 1.2,
+    },
+    clicked: {
+      transition: {
+        type: "tween",
+        ease: "anticipate",
+        duration: 0.25,
+      },
+    },
+    notClicked: {},
+  };
 
   const handleOnReady = () => {
     setButtonClicked(true);
@@ -65,7 +66,7 @@ const LobbyView = ({ playerCount, onGameReady }: LobbyViewProps) => {
         </Text>
         <MotionButton
           onClick={handleOnReady}
-          //   variants={buttonVariants}
+          variants={buttonVariants}
           size="md"
           animate={buttonClicked ? "clicked" : "notClicked"}
           whileHover="hover"
@@ -78,28 +79,6 @@ const LobbyView = ({ playerCount, onGameReady }: LobbyViewProps) => {
           {buttonClicked ? "Let's go!" : "Start Game"}
         </MotionButton>
       </Flex>
-
-      {/* <Box>
-        <Button
-          m={2}
-          onClick={() => {
-            setTilePositions({ y: 400 });
-          }}
-        >
-          Shift!
-        </Button>
-        <Flex>
-          <VideoTile stream={localStream} />
-          <VideoTile stream={localStream} position={tilePositions} />
-          <VideoTile stream={localStream} />
-          <VideoTile stream={localStream} position={tilePositions} />
-        </Flex>
-      </Box>
-      <ChakraBox>
-      <QuestionView quizState={quizState} localMedia={localMedia} roomConnection={roomConnection} quizActions={quizActions}/>
-      </ChakraBox>
-
-      </Box> */}
     </Box>
   );
 };
