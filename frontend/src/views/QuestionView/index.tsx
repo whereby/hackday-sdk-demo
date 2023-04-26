@@ -6,14 +6,23 @@ import {
 import AnswerCard from "../../components/AnswerCard";
 import QuestionCard from "../../components/QuestionCard";
 import VideoTile from "../../components/VideoTile";
+import { GameActions, GameState } from "../../useQuizGame";
+import { useRoomConnection } from "@whereby.com/browser-sdk";
+type RoomConnectionRef = ReturnType<typeof useRoomConnection>;
 
-export default function QuestionView({ quizState, localMedia, roomConnection }) {
+export default function QuestionView({ quizState, localMedia, roomConnection, quizActions }: {quizState: GameState, localMedia: any, roomConnection: RoomConnectionRef, quizActions: GameActions} ) {
 
   const { state } = roomConnection;
   const {remoteParticipants } = state;
   const { localStream } = localMedia.state;
   
-  console.log("quizState", quizState);
+  const participantId = roomConnection.state.localParticipant?.id || "unknown";
+  const hasAnswered = !!(quizState.currentAnswers && quizState.currentAnswers[participantId])
+
+  if (hasAnswered) {
+    return <p>Answered!</p>
+  }
+
   return (
     <Box
       bgGradient="linear(to-r, grey, blue)"
@@ -30,17 +39,19 @@ export default function QuestionView({ quizState, localMedia, roomConnection }) 
         {Object.keys(quizState.currentQuestion?.alternatives || {}).map((k) => {
           return (
             <AnswerCard key={k}
-              answerText={quizState.currentQuestion?.alternatives[k]}
+              locked={hasAnswered}
+              answerText={quizState.currentQuestion?.alternatives[k]} onSelected={()=> quizActions.postAnswer(k)}
             ></AnswerCard>
           );
         })}
       </Wrap>
 
       <Flex alignItems="center"  justifyContent="center">
-      <VideoTile stream={localStream} isAnsweredBadge={true}/>
+      <VideoTile stream={localStream} isAnsweredBadge={hasAnswered}/>
         {remoteParticipants.map((p) => {
           const { id, stream, displayName } = p;
-          return <VideoTile key={id} stream={stream} name={displayName} />;
+          const hasParticipantAnswered = !!(quizState.currentAnswers || {})[id]
+          return <VideoTile key={id} stream={stream} name={displayName} isAnsweredBadge={hasParticipantAnswered} />;
         })}
       </Flex>
     </Box>

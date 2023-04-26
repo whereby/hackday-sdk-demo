@@ -19,7 +19,7 @@ interface QuestionAlternatives {
   [alternativeId: string]: string;
 }
 
-interface GameState {
+export interface GameState {
   isQuizMaster: boolean;
   scores: {
     [participantId: string]: number;
@@ -32,7 +32,7 @@ interface GameState {
   revealAnswers: boolean;
 }
 
-interface GameActions {
+export interface GameActions {
   end(): void;
   postAnswer(alternative: string): void;
   postQuestion(question: Question): void;

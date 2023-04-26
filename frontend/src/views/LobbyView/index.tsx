@@ -71,7 +71,7 @@ const LobbyView = ({ localMedia}: any) => {
         </Flex>
       </Box>
       <ChakraBox>
-      <QuestionView quizState={quizState} localMedia={localMedia} roomConnection={roomConnection}/>
+      <QuestionView quizState={quizState} localMedia={localMedia} roomConnection={roomConnection} quizActions={quizActions}/>
       </ChakraBox>
 
     </Box>

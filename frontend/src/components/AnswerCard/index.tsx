@@ -5,11 +5,12 @@ import { useState } from "react";
 
 interface AnswerCardProps {
     answerText?: string;
+    locked: boolean;
+    onSelected: () => void;
   }
 
-const AnswerCard  = ({ answerText}: AnswerCardProps) => {
+const AnswerCard  = ({ locked, answerText, onSelected}: AnswerCardProps) => {
   const ChakraButton= motion(Button);
-  const [buttonClicked, setButtonClicked] = useState(false);
     
     const blockVariants = {
         initial: {
@@ -28,7 +29,6 @@ const AnswerCard  = ({ answerText}: AnswerCardProps) => {
         const rotate = useMotionValue(0);
  
         const scale = useTransform(rotate, [0, 270], [0, 1]);
-        const handleOnClick = () => {setButtonClicked(!buttonClicked)}
           return (
             <>
             <ChakraButton
@@ -42,13 +42,13 @@ const AnswerCard  = ({ answerText}: AnswerCardProps) => {
               variants={blockVariants}
               initial="initial"
               animate="target"
-              whileTap={buttonClicked ? "clicked" : "notClicked"}
+              // whileTap={locked ? "clicked" : "notClicked"}
               transition={{
                 ease: 'easeInOut',
                 duration: 2,
                 delay: 1
               }}
-              onClick={handleOnClick}
+              onClick={()=> onSelected()}
               colorScheme='blackAlpha'
             >{answerText}</ChakraButton> 
             </>
