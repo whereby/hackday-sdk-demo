@@ -59,8 +59,12 @@ export default function QuestionView({
           );
         })}
       </Wrap>
+    </Box>
+  );
+}
 
-      <Flex alignItems="center" justifyContent="center">
+/**
+ * <Flex alignItems="center" justifyContent="center">
         <VideoTile stream={localStream} isAnsweredBadge={hasAnswered} />
         {remoteParticipants.map((p) => {
           const { id, stream, displayName } = p;
@@ -75,6 +79,4 @@ export default function QuestionView({
           );
         })}
       </Flex>
-    </Box>
-  );
-}
+ */
