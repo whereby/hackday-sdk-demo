@@ -7,6 +7,7 @@ import {
   Avatar,
   Text,
   Center,
+  AvatarBadge,
 } from "@chakra-ui/react";
 import { VideoView } from "@whereby.com/browser-sdk";
 
@@ -29,9 +30,10 @@ interface VideoTileProps {
     x?: number;
     y?: number;
   };
+  isAnsweredBadge?: boolean;
 }
 
-const VideoTile = ({ id, name, stream, position }: VideoTileProps) => {
+const VideoTile = ({ id, name, stream, position, isAnsweredBadge }: VideoTileProps) => {
   const [scope, animate] = useAnimate();
 
   const { x, y } = position || {};
@@ -81,7 +83,7 @@ const VideoTile = ({ id, name, stream, position }: VideoTileProps) => {
         />
       ) : (
         <Center h="240px" w="240px">
-          <Avatar size="xl" name={name} />
+          <Avatar size="xl" name={name}>{isAnsweredBadge && <AvatarBadge boxSize='1.25em' bg='green.500' />}</Avatar>
         </Center>
       )}
       <Text>{name}</Text>
