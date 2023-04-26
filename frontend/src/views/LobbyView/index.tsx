@@ -11,8 +11,10 @@ import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import VideoTile from "../../components/VideoTile";
 import { WHEREBY_ROOM } from "../../config/constants";
 import useQuizGame from "../../useQuizGame";
+import QuestionView from "../QuestionView";
+import { motion } from "framer-motion";
 
-const LobbyView = ({ localMedia }: any) => {
+const LobbyView = ({ localMedia}: any) => {
   const [tilePositions, setTilePositions] = useState({});
 
   const roomConnection = useRoomConnection(WHEREBY_ROOM, {
@@ -31,6 +33,7 @@ const LobbyView = ({ localMedia }: any) => {
   const { localStream } = localMedia.state;
   const { state, actions, components } = roomConnection;
   const { roomConnectionStatus, remoteParticipants } = state;
+  const ChakraBox = motion(Box);
 
   console.log(remoteParticipants);
   return (
@@ -67,6 +70,10 @@ const LobbyView = ({ localMedia }: any) => {
           <VideoTile stream={localStream} position={tilePositions} />
         </Flex>
       </Box>
+      <ChakraBox>
+      <QuestionView quizState={quizState} localMedia={localMedia} roomConnection={roomConnection}/>
+      </ChakraBox>
+
     </Box>
   );
 };
