@@ -7,8 +7,16 @@ const config: ThemeConfig = {
 
 const overrides = {
   fonts: {
-    // heading: `'Raleway', sans-serif`,
+    heading: `'Bangers', cursive`,
     // body: `'Nunito', sans`,
+  },
+  components: {
+    Heading: {
+      baseStyle: {
+        letterSpacing: "2px",
+        fontWeight: 300,
+      },
+    },
   },
 };
 
