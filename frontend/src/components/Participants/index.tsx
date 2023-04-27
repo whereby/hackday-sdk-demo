@@ -118,15 +118,6 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
 
   return (
     <Flex gap="4" height="35vh">
-      <Button
-        onClick={sortTiles}
-        position="absolute"
-        left="0"
-        bottom="10"
-        zIndex="100"
-      >
-        Shuffle
-      </Button>
       <Flex marginLeft="80px">
         <AnimatePresence>
           {tiles.map((participant) => {
