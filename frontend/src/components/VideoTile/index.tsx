@@ -15,6 +15,7 @@ interface VideoTileProps {
   };
   hasAnswered?: boolean;
   animation?: string;
+  questionResult?: "correct" | "incorrect" | "no_vote" | null;
 }
 
 const ChakraBox = motion(Box);
@@ -26,9 +27,11 @@ const VideoTile = ({
   position,
   animation,
   hasAnswered,
+  questionResult,
 }: VideoTileProps) => {
   const [scope, animate] = useAnimate();
 
+  console.log("questionResult:", questionResult);
   const { x, y } = position || {};
 
   const popAnimation = useCallback(async () => {
@@ -37,10 +40,10 @@ const VideoTile = ({
   }, [animate, scope]);
 
   const rotateAnimation = useCallback(async () => {
-    // await animate(scope.current, { rotate: -90 });
-    // await animate(scope.current, { scale: 1.5 });
-    // await animate(scope.current, { rotate: 0 });
-    // await animate(scope.current, { scale: 1 });
+    await animate(scope.current, { rotate: -90 });
+    await animate(scope.current, { scale: 1.5 });
+    await animate(scope.current, { rotate: 0 });
+    await animate(scope.current, { scale: 1 });
   }, [animate, scope]);
 
   const answeredAnimation = useCallback(async () => {
@@ -60,6 +63,16 @@ const VideoTile = ({
   useEffect(() => {
     if (hasAnswered) answeredAnimation();
   }, [hasAnswered, answeredAnimation]);
+
+  useEffect(() => {
+    console.log("oi");
+    if (questionResult === "correct") {
+      console.log("oi again");
+      rotateAnimation();
+    } else if (questionResult === "incorrect") {
+      popAnimation();
+    }
+  }, [popAnimation, questionResult, rotateAnimation]);
 
   return (
     <ChakraBox
