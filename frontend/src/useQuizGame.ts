@@ -3,7 +3,7 @@
  * Depends on the room connection state.
  */
 
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useLocalMedia, useRoomConnection } from "@whereby.com/browser-sdk";
 
 import questions from "./events/questions";
@@ -37,6 +37,7 @@ export interface GameState {
 export interface GameActions {
   start(): void;
   end(): void;
+  nextQuestion(): void;
   postAnswer(alternative: string): void;
   postQuestion(question: Question): void;
   revealAnswers(): void;
@@ -137,6 +138,8 @@ export default function useQuizGame(roomConnection: RoomConnectionRef): {
 } {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { state: roomState, actions: roomActions } = roomConnection;
+  const [questionCounter, setQuestionCounter] = useState(0);
+  console.log("Counter", questionCounter);
 
   console.log(state);
 
@@ -171,6 +174,12 @@ export default function useQuizGame(roomConnection: RoomConnectionRef): {
             type: "END",
           })
         );
+      },
+      nextQuestion() {
+        // TODO: Check if user is quiz master?
+        // Separate type or just straight to question
+        setQuestionCounter(questionCounter + 1);
+        roomActions.sendChatMessage(JSON.stringify(questions[questionCounter]));
       },
 
       // This will only be needed if we implement quiz-master UI

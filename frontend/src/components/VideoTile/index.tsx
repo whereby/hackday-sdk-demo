@@ -17,6 +17,8 @@ interface VideoTileProps {
   animation?: string;
 }
 
+const ChakraBox = motion(Box);
+
 const VideoTile = ({
   id,
   name,
@@ -58,8 +60,6 @@ const VideoTile = ({
   useEffect(() => {
     if (hasAnswered) answeredAnimation();
   }, [hasAnswered, answeredAnimation]);
-
-  const ChakraBox = motion(Box);
 
   return (
     <ChakraBox

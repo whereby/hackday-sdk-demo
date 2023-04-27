@@ -1,5 +1,5 @@
 import { useState, memo } from "react";
-import { Box, Flex, Wrap, Center, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Wrap, Center, Heading } from "@chakra-ui/react";
 import AnswerCard from "../../components/AnswerCard";
 import QuestionCard from "../../components/QuestionCard";
 import Title from "../../components/Title";
@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { GameActions, GameState } from "../../useQuizGame";
 import { useRoomConnection } from "@whereby.com/browser-sdk";
 import { current } from "@reduxjs/toolkit";
+import questions from "../../events/questions";
+
 type RoomConnectionRef = ReturnType<typeof useRoomConnection>;
 
 interface Question {
@@ -19,17 +21,29 @@ interface Question {
 interface QuestionViewProps {
   answerQuestion: (string) => void;
   question: Question | null;
+  currentAnswer: string | null;
+  reveal: boolean;
+  revealQuestionAnswers: () => void;
+  nextQuestionAnswer: () => void;
 }
 
 const MotionBox = motion(Box);
 
-const QuestionView = ({ question, answerQuestion }: QuestionViewProps) => {
-  const [currentAnswer, setCurrentAnswer] = useState<string | null>(null);
+const QuestionView = ({
+  question,
+  answerQuestion,
+  currentAnswer,
+  reveal,
+  nextQuestionAnswer,
+}: QuestionViewProps) => {
+  //const [currentAnswer, setCurrentAnswer] = useState<string | null>(null);
+
+  console.log("currentAnswer: ", currentAnswer);
 
   const {
     question: questionText = "",
     alternatives = [],
-    correctAlternative = {},
+    correctAlternative = "",
   } = question || {};
 
   // TODO: Fix
@@ -47,9 +61,13 @@ const QuestionView = ({ question, answerQuestion }: QuestionViewProps) => {
   };
 
   const handleClick = (answer) => {
-    setCurrentAnswer(answer);
-    answerQuestion(answer);
+    //setCurrentAnswer(answer);
+    if (!currentAnswer) {
+      answerQuestion(answer);
+    }
   };
+
+  console.log("Questions", questions);
 
   return (
     <MotionBox
@@ -74,6 +92,8 @@ const QuestionView = ({ question, answerQuestion }: QuestionViewProps) => {
         {Object.keys(alternatives).map((k) => {
           return (
             <AnswerCard
+              isCorrect={question?.correctAlternative === k}
+              reveal={reveal}
               key={k}
               locked={!!currentAnswer}
               isSelected={currentAnswer === k}
@@ -82,7 +102,28 @@ const QuestionView = ({ question, answerQuestion }: QuestionViewProps) => {
             />
           );
         })}
+        {reveal && (
+          <Heading>
+            The correct answer is: {alternatives[correctAlternative]}
+          </Heading>
+        )}
       </Center>
+
+      {reveal && (
+        <Button
+          onClick={() => {
+            nextQuestionAnswer();
+          }}
+        >
+          Next Question
+        </Button>
+      )}
+      {/* 
+      // {reveal && <Heading>The correct answer is: {correctAlternative}</Heading>} */}
+
+      <Box>
+        <Button onClick={() => {}}>Reveal answers</Button>
+      </Box>
     </MotionBox>
   );
 };

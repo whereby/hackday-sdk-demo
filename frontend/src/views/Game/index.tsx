@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Flex, Box } from "@chakra-ui/react";
 import { useRoomConnection } from "@whereby.com/browser-sdk";
 
@@ -28,8 +28,36 @@ const Game = ({ localMedia }: LobbyViewProps) => {
   const { state: quizState, actions: quizActions } =
     useQuizGame(roomConnection);
 
+  const quizCurrentScreen = useMemo(() => quizState.screen, [quizState.screen]);
+  const quizCurrentQuestion = useMemo(
+    () => quizState.currentQuestion,
+    [quizState.currentQuestion]
+  );
+  const quizCurrentAnswers = useMemo(
+    () => quizState.currentAnswers,
+    [quizState.currentAnswers]
+  );
+
+  const quizReveal = useMemo(
+    () => quizState.revealAnswers,
+    [quizState.revealAnswers]
+  );
+
+  const quizCurrentAnswer = useMemo(() => {
+    const answers = quizState.currentAnswers || {};
+    const pid = roomConnection.state.localParticipant?.id || "unknown";
+    return answers[pid];
+  }, [quizState.currentAnswers, roomConnection.state.localParticipant]);
+
+  const gameState = useMemo(() => quizState, [quizState]);
+
+  console.log("QuizState");
+  console.log(quizState);
+
+  const { postAnswer, nextQuestion, revealAnswers } = quizActions;
+
   const CurrentScreen = () => {
-    switch (quizState.screen) {
+    switch (quizCurrentScreen) {
       case "welcome":
         return (
           <LobbyView
@@ -40,8 +68,12 @@ const Game = ({ localMedia }: LobbyViewProps) => {
       case "question":
         return (
           <QuestionView
-            question={quizState.currentQuestion}
-            answerQuestion={quizActions.postAnswer}
+            reveal={quizReveal}
+            currentAnswer={quizCurrentAnswer}
+            question={quizCurrentQuestion}
+            answerQuestion={postAnswer}
+            nextQuestionAnswer={nextQuestion}
+            revealQuestionAnswers={revealAnswers}
           />
         );
       case "end":
