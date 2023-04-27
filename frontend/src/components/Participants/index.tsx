@@ -28,9 +28,29 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
   const sortTiles = useCallback(() => {
     console.log("Sorting tiles!");
     // TODO: sort by score
-    const shuffled = [...tiles].sort((a, b) => 0.5 - Math.random());
+    const shuffled = [...tiles].sort((a, b) => {
+      const aId = a?.id || "unknown";
+      const aName = a?.displayName || "Unknown";
+      const bId = b?.id || "unknown";
+      const bName = b?.displayName || "Unknown";
+
+      const aScore = scores[aId] || 0;
+      const bScore = scores[bId] || 0;
+
+      if (aScore === bScore) {
+        if (aName >= bName) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else if (aScore > bScore) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
     setTiles(shuffled);
-  }, [tiles]);
+  }, [tiles, scores]);
 
   // Should only be triggered when revealAnswers changes - don't change dep array
   useEffect(() => {
@@ -119,7 +139,7 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
               <motion.div {...animationProps} key={id}>
                 <VideoTile
                   stream={stream}
-                  name={displayName}
+                  name={`${displayName} - ${scores[id] || 0} points`}
                   hasAnswered={hasParticipantAnswered}
                   roundResult={roundResults[id]}
                 />
