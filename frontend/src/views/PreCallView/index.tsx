@@ -14,6 +14,10 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setName(event.target.value);
 
+  const handleClick = () => {
+    handleOnReady(name);
+  };
+
   return (
     <Box>
       <Box my="4">
@@ -43,7 +47,7 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
             value={name}
             onChange={handleTextChange}
           ></Input>
-          <Button onClick={handleOnReady}>Ready!</Button>
+          <Button onClick={handleClick}>Ready!</Button>
         </Flex>
       </Box>
     </Box>

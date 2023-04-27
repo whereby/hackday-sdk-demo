@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, memo } from "react";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { motion, Reorder } from "framer-motion";
+import { motion, Reorder, AnimatePresence, usePresence } from "framer-motion";
 
 import { RoomConnectionRef, GameState } from "../../useQuizGame";
 
@@ -21,18 +21,63 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
     quizState.currentAnswers && quizState.currentAnswers[selfId]
   );
 
-  const allParticipants = [...remoteParticipants, localParticipant];
-  console.log("participants: all", allParticipants);
-
-  const [tileOrder, setTileOrder] = useState(allParticipants);
+  const [tiles, setTiles] = useState([...remoteParticipants, localParticipant]);
+  const [isPresent, safeToRemove] = usePresence();
 
   useEffect(() => {
-    setTileOrder(tileOrder);
-  }, [roomConnection, tileOrder]);
+    const allParticipants = [...remoteParticipants, localParticipant];
+    setTiles(allParticipants);
+  }, [remoteParticipants, localParticipant]);
+
+  const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 };
+
+  const animationProps = {
+    layout: true,
+    initial: "out",
+    // style: {
+    //   // position: isPresent ? "static" : "absolute",
+    // },
+    animate: isPresent ? "in" : "out",
+    whileTap: "tapped",
+    variants: {
+      // in: { scaleY: 1, opacity: 1, color: "green" },
+      // out: { scaleY: 0, opacity: 0.5, zIndex: -1, color: "blue" },
+      // tapped: { scale: 0.98, opacity: 0.5, transition: { duration: 0.1 } },
+    },
+    onAnimationComplete: () => !isPresent && safeToRemove(),
+    transition,
+  };
+
+  const sortTiles = () => {
+    console.log("sortTiles");
+    const shuffled = [...tiles].sort((a, b) => 0.5 - Math.random());
+    setTiles(shuffled);
+  };
+
+  console.log(tiles);
 
   return (
     <MotionFlex gap="4">
-      {/* <OrderedTiles participants={allParticipants} /> */}
+      <Button onClick={sortTiles}>Shuffle</Button>
+      <AnimatePresence>
+        {tiles.map((participant) => {
+          if (!participant) return null;
+
+          const { id, stream, displayName } = participant;
+          // const hasParticipantAnswered = !!(quizState.currentAnswers || {})[id];
+          // console.log(hasParticipantAnswered);
+
+          return (
+            <motion.div {...animationProps} key={id}>
+              <VideoTile
+                stream={stream}
+                name={displayName}
+                hasAnswered={false}
+              />
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
       {/* <VideoTile stream={localStream} name={"You"} hasAnswered={hasAnswered} />
       {remoteParticipants.map((participant, i) => {
         const { id, stream, displayName } = participant;
@@ -48,61 +93,30 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
           />
         );
       })} */}
-      <Reorder.Group axis="x" values={tileOrder} onReorder={setTileOrder}>
-        {tileOrder.map((participant) => {
-          console.log("inside map");
-          console.log(participant);
-          if (!participant) return null;
-          // const participant = participants.find((p) => p?.id === participantId);
-
-          const { id, stream, displayName } = participant;
-          // const hasParticipantAnswered = !!(quizState.currentAnswers || {})[
-          //   participantId
-          // ];
-
-          return (
-            <Reorder.Item key={id} value={participant}>
-              <VideoTile
-                stream={stream}
-                name={displayName}
-                hasAnswered={false}
-              />
-            </Reorder.Item>
-          );
-        })}
-      </Reorder.Group>
     </MotionFlex>
   );
 };
 
-// const OrderedTiles = ({ participants }) => {
-//   const [tileOrder, setTileOrder] = useState(participants);
+// tileOrder.map((participant) => {
+//   console.log("inside map");
+//   console.log(participant);
+//   if (!participant) return null;
+//   // const participant = participants.find((p) => p?.id === participantId);
 
-//   useEffect(() => {
-//     setTileOrder(tileOrder);
-//   }, [participants, tileOrder]);
+//   const { id, stream, displayName } = participant;
+//   // const hasParticipantAnswered = !!(quizState.currentAnswers || {})[
+//   //   participantId
+//   // ];
 
 //   return (
-//     <Reorder.Group axis="x" values={tileOrder} onReorder={setTileOrder}>
-//       {tileOrder.map((participant) => {
-//         console.log("inside map");
-//         console.log(participant);
-//         if (!participant) return null;
-//         // const participant = participants.find((p) => p?.id === participantId);
-
-//         const { id, stream, displayName } = participant;
-//         // const hasParticipantAnswered = !!(quizState.currentAnswers || {})[
-//         //   participantId
-//         // ];
-
-//         return (
-//           <Reorder.Item key={id} value={participant}>
-//             <VideoTile stream={stream} name={displayName} hasAnswered={false} />
-//           </Reorder.Item>
-//         );
-//       })}
-//     </Reorder.Group>
+//     <Reorder.Item key={id} value={participant}>
+//       <VideoTile
+//         stream={stream}
+//         name={displayName}
+//         hasAnswered={false}
+//       />
+//     </Reorder.Item>
 //   );
-// };
+// })}
 
 export default memo(Participants);

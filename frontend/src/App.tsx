@@ -9,17 +9,21 @@ import "./App.css";
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
-  const localMedia = useLocalMedia({ audio: false, video: false });
+  const [name, setName] = useState("");
+  const localMedia = useLocalMedia({ audio: false, video: true });
 
   return (
     <Box h="100%" textAlign="center">
       {!isConnected ? (
         <PreCallView
           localMedia={localMedia}
-          handleOnReady={() => setIsConnected(true)}
+          handleOnReady={(name) => {
+            setName(name);
+            setIsConnected(true);
+          }}
         />
       ) : (
-        <Game localMedia={localMedia} />
+        <Game localMedia={localMedia} name={name} />
       )}
     </Box>
   );
