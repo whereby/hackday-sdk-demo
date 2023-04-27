@@ -1,6 +1,6 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 
 interface AnswerCardProps {
   answerText?: string;
@@ -36,8 +36,6 @@ const AnswerCard = ({
     },
   };
 
-  console.log(isSelected);
-
   const rotate = useMotionValue(0);
   const scale = useTransform(rotate, [0, 270], [0, 1]);
 
@@ -72,7 +70,7 @@ const AnswerCard = ({
       }}
       borderColor={borderColor}
       borderWidth={isSelected || reveal ? "8px" : "0px"}
-      onClick={() => onSelected()}
+      onClick={onSelected}
       colorScheme="blackAlpha"
     >
       {answerText}

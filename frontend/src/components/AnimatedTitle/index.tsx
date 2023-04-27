@@ -1,22 +1,22 @@
-import React, { memo } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
 import { Flex, Text } from "@chakra-ui/react";
 
 interface TitleProps {
-  children: string;
+  children: string | undefined;
 }
 
 const MotionFlex = motion(Flex);
 const MotionText = motion(Text);
 
 const Title = ({ children }: TitleProps) => {
-  const words = children.split(" ");
+  const words = children?.split(" ");
 
   const container = {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0.04 * i },
+      transition: { staggerChildren: 0.22, delayChildren: 0.04 * i },
     }),
   };
 
@@ -35,7 +35,7 @@ const Title = ({ children }: TitleProps) => {
       x: 20,
       transition: {
         type: "spring",
-        damping: 12,
+        damping: 24,
         stiffness: 100,
       },
     },
@@ -43,14 +43,14 @@ const Title = ({ children }: TitleProps) => {
 
   return (
     <MotionFlex
-      overflow="hidden"
-      fontSize="2rem"
+      flexWrap="wrap"
       variants={container}
       initial="hidden"
       animate="visible"
+      exit="exit"
       justifyContent="center"
     >
-      {words.map((word, i) => (
+      {words?.map((word, i) => (
         <MotionText key={i} variants={child} mr="1">
           {word}
         </MotionText>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { Box, Avatar, AvatarBadge, Text, Center } from "@chakra-ui/react";
 import { VideoView } from "@whereby.com/browser-sdk";
@@ -44,8 +44,16 @@ const VideoTile = ({
   }, [animate, scope]);
 
   const correctAnimation = useCallback(async () => {
-    await animate(scope.current, { y: -120 }, { ease: "easeIn", duration: 2 });
-    await animate(scope.current, { y: 0 }, { ease: "easeIn", duration: 1 });
+    await animate(
+      scope.current,
+      { y: -120 },
+      { ease: "anticipate", duration: 2.25 }
+    );
+    await animate(
+      scope.current,
+      { y: 0 },
+      { ease: "anticipate", duration: 0.75 }
+    );
   }, [animate, scope]);
 
   useEffect(() => {

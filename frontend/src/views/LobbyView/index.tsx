@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import Title from "../../components/Title";
+import Title from "../../components/AnimatedTitle";
 import { GameActions } from "../../useQuizGame";
 
 interface LobbyViewProps {

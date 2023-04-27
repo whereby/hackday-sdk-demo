@@ -17,6 +17,17 @@ const overrides = {
         fontWeight: 300,
       },
     },
+    Text: {
+      baseStyle: {
+        letterSpacing: "1px",
+        fontWeight: 300,
+      },
+    },
+    Button: {
+      baseStyle: {
+        letterSpacing: "1px",
+      },
+    },
   },
 };
 

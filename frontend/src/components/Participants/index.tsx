@@ -11,6 +11,8 @@ interface ParticipantsProps {
   quizState: GameState;
 }
 
+const SORTING_TIMEOUT = 4000;
+
 const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
   const { state: roomState } = roomConnection;
   const { remoteParticipants, localParticipant } = roomState;
@@ -57,7 +59,7 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
     if (revealAnswers) {
       const timer = setTimeout(() => {
         sortTiles();
-      }, 3000);
+      }, SORTING_TIMEOUT);
 
       return () => clearTimeout(timer);
     }

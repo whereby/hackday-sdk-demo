@@ -1,16 +1,9 @@
-import { useState, memo } from "react";
-import { Box, Button, Flex, Wrap, Center, Heading } from "@chakra-ui/react";
-import AnswerCard from "../../components/AnswerCard";
-import QuestionCard from "../../components/QuestionCard";
-import Title from "../../components/Title";
-import VideoTile from "../../components/VideoTile";
+import { memo } from "react";
 import { motion } from "framer-motion";
-import { GameActions, GameState } from "../../useQuizGame";
-import { useRoomConnection } from "@whereby.com/browser-sdk";
-import { current } from "@reduxjs/toolkit";
-import questions from "../../events/questions";
+import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
 
-type RoomConnectionRef = ReturnType<typeof useRoomConnection>;
+import Title from "../../components/AnimatedTitle";
+import AnswerCard from "../../components/AnswerCard";
 
 interface Question {
   question: string;
@@ -39,8 +32,6 @@ const QuestionView = ({
   revealQuestionAnswers,
   isQuizMaster,
 }: QuestionViewProps) => {
-  //const [currentAnswer, setCurrentAnswer] = useState<string | null>(null);
-
   const {
     question: questionText = "",
     alternatives = [],
@@ -50,7 +41,7 @@ const QuestionView = ({
   // TODO: Fix
   const boxVariants = {
     visible: {
-      backgroundColor: ["#60F", "#09F", "#FA0"],
+      // backgroundColor: ["#60F", "#09F", "#FA0"],
       transition: {
         delay: 1,
         duration: 2,
@@ -62,7 +53,6 @@ const QuestionView = ({
   };
 
   const handleClick = (answer) => {
-    //setCurrentAnswer(answer);
     if (!currentAnswer) {
       answerQuestion(answer);
     }
@@ -70,7 +60,7 @@ const QuestionView = ({
 
   return (
     <MotionBox
-      key={questionText}
+      // key={questionText}
       // bgGradient="linear(to-r, grey, blue)"
       // alignItems="center"
       // justifyContent="center"
@@ -83,11 +73,12 @@ const QuestionView = ({
       // overflow="auto"
     >
       <Heading>
-        <Title>{questionText}</Title>
+        {Boolean(currentAnswer) || reveal ? (
+          <Text as="h1">{questionText}</Text>
+        ) : (
+          <Title>{questionText}</Title>
+        )}
       </Heading>
-
-      {/* TODO: use question view to change bg colour */}
-
       <Center justifyContent="space-evenly" alignItems="center" h="100%">
         {Object.keys(alternatives).map((k) => {
           return (

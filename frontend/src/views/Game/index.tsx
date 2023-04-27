@@ -19,8 +19,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const isQuizMaster = !!urlParams.get("quizMaster");
 
 const Game = ({ localMedia, name }: LobbyViewProps) => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-
   const roomConnection = useRoomConnection(WHEREBY_ROOM, {
     localMedia,
     displayName: name,
@@ -40,10 +38,6 @@ const Game = ({ localMedia, name }: LobbyViewProps) => {
     () => quizState.currentQuestion,
     [quizState.currentQuestion]
   );
-  const quizCurrentAnswers = useMemo(
-    () => quizState.currentAnswers,
-    [quizState.currentAnswers]
-  );
 
   const quizReveal = useMemo(
     () => quizState.revealAnswers,
@@ -52,11 +46,9 @@ const Game = ({ localMedia, name }: LobbyViewProps) => {
 
   const quizCurrentAnswer = useMemo(() => {
     const answers = quizState.currentAnswers || {};
-    const pid = roomConnection.state.localParticipant?.id || "unknown";
+    const pid = localParticipant?.id || "unknown";
     return answers[pid];
-  }, [quizState.currentAnswers, roomConnection.state.localParticipant]);
-
-  const gameState = useMemo(() => quizState, [quizState]);
+  }, [localParticipant?.id, quizState.currentAnswers]);
 
   const { postAnswer, nextQuestion, revealAnswers } = quizActions;
 
