@@ -12,16 +12,18 @@ import Scoreboard from "../Scoreboard";
 
 interface LobbyViewProps {
   localMedia: LocalMediaRef;
+  name: string;
 }
 
 const urlParams = new URLSearchParams(window.location.search);
 const isQuizMaster = !!urlParams.get("quizMaster");
 
-const Game = ({ localMedia }: LobbyViewProps) => {
+const Game = ({ localMedia, name }: LobbyViewProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const roomConnection = useRoomConnection(WHEREBY_ROOM, {
     localMedia,
+    displayName: name,
     logger: console,
   });
 
