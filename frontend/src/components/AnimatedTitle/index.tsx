@@ -51,7 +51,7 @@ const Title = ({ children }: TitleProps) => {
       justifyContent="center"
     >
       {words?.map((word, i) => (
-        <MotionText key={i} variants={child} mr="1">
+        <MotionText key={i} variants={child} mr="5px" fontWeight="800">
           {word}
         </MotionText>
       ))}

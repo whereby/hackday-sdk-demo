@@ -163,7 +163,6 @@ export default function useQuizGame(
     state,
     actions: {
       start() {
-        // TODO: Check if user is quiz master?
         // Separate type or just straight to question
         roomActions.sendChatMessage(JSON.stringify(questions[0]));
       },

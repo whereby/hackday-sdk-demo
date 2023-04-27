@@ -1,6 +1,7 @@
 import { GameState, RoomConnectionRef } from "../../useQuizGame";
 import { motion } from "framer-motion";
 
+import { Heading, Box } from "@chakra-ui/react";
 import Participants from "../../components/Participants";
 
 interface ScoreboardProps {
@@ -37,13 +38,16 @@ export default function Scoreboard({
 
   return (
     <div style={style}>
+      <Heading my="8">Final Scores</Heading>
       <motion.div layout>
-        <Participants
-          roomConnection={roomConnection}
-          quizState={quizState}
-          variant="small"
-          screen="scoreboard"
-        />
+        <Box mb="8">
+          <Participants
+            roomConnection={roomConnection}
+            quizState={quizState}
+            variant="small"
+            screen="scoreboard"
+          />
+        </Box>
       </motion.div>
       {scoreboard.map((s) => (
         <motion.h1 key={s.participantId} layout>

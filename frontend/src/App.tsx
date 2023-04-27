@@ -5,19 +5,28 @@ import { useLocalMedia } from "@whereby.com/browser-sdk";
 import PreCallView from "./views/PreCallView";
 import Game from "./views/Game";
 
-import "./App.css";
+import background from "./assets/background2.svg";
+
 import DeviceControls from "./views/DeviceControls";
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [name, setName] = useState("");
-  const localMedia = useLocalMedia({ audio: false, video: true });
+  const localMedia = useLocalMedia({ audio: false, video: false });
 
   const { localStream } = localMedia.state;
   const { toggleCameraEnabled, toggleMicrophoneEnabled } = localMedia.actions;
 
   return (
-    <Box h="100%" textAlign="center" overflow="hidden">
+    <Box
+      h="100%"
+      textAlign="center"
+      overflow="hidden"
+      backgroundImage={`url(${background})`}
+      backgroundPosition="center"
+      backgroundSize="cover"
+      backgroundRepeat="no-repeat"
+    >
       {!isConnected ? (
         <PreCallView
           localMedia={localMedia}

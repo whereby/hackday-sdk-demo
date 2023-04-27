@@ -36,7 +36,6 @@ const Participants = ({
 
   const sortTiles = useCallback(() => {
     console.log("Sorting tiles!");
-    // TODO: sort by score
     const shuffled = [...tiles].sort((a, b) => {
       const aId = a?.id || "unknown";
       const aName = a?.displayName || "Unknown";
@@ -140,7 +139,6 @@ const Participants = ({
   return (
     <Flex gap="4" height="35vh">
       <Flex
-        marginLeft="80px"
         flexDir={screen === "scoreboard" ? "column" : "row"}
         justifyContent={screen === "scoreboard" ? "center" : "flex-start"}
         w="100%"

@@ -53,12 +53,15 @@ const AnswerCard = ({
 
   return (
     <ChakraButton
-      style={{
-        height: "400px",
-        width: "400px",
-        // rotate,
-        // scale,
-      }}
+      w="50%"
+      h="100%"
+      m="4"
+      // style={{
+      //   height: "400px",
+      //   width: "400px",
+      //   // rotate,
+      //   // scale,
+      // }}
       // variants={blockVariants}
       // initial="initial"
       // animate="target"
@@ -72,6 +75,7 @@ const AnswerCard = ({
       borderWidth={isSelected || reveal ? "8px" : "0px"}
       onClick={onSelected}
       colorScheme="blackAlpha"
+      fontSize="2xl"
     >
       {answerText}
     </ChakraButton>

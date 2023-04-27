@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Input, Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
+import AnimatedTitle from "../../components/AnimatedTitle";
 import VideoTile from "../../components/VideoTile";
 import { chakraMotionElement } from "../../utils/useChakraMotion";
 
@@ -26,6 +27,9 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
 
   return (
     <Box>
+      <Heading mt="10" mb="4">
+        Join the game!
+      </Heading>
       <Box w="50%" my={4} margin="0 auto">
         <VideoTile muted stream={localStream} />
         <Flex justifyContent="center" gap="2" mt="4">

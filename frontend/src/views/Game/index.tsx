@@ -88,11 +88,15 @@ const Game = ({ localMedia, name }: LobbyViewProps) => {
   };
 
   return (
-    <Flex flexDirection="column" height="100%" background="red.200">
+    <Flex
+      flexDirection="column"
+      height="100%"
+      //  background="red.200"
+    >
       <Box flexGrow="3" height="100%">
         <CurrentScreen />
       </Box>
-      <Box flexGrow="2" p="4" background="white">
+      <Box flexGrow="2" p="4" background="whiteAlpha.500">
         {quizCurrentScreen !== "end" && (
           <Participants roomConnection={roomConnection} quizState={quizState} />
         )}

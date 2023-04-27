@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useMemo } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { Box, Avatar, AvatarBadge, Text, Center } from "@chakra-ui/react";
 import { VideoView } from "@whereby.com/browser-sdk";
@@ -81,6 +81,17 @@ const VideoTile = ({
 
   const tileSize = variant === "small" ? "120px" : "240px";
 
+  const borderColor = useMemo(() => {
+    if (roundResult === "correct") {
+      return "green.300";
+    } else if (roundResult === "incorrect") {
+      return "red.300";
+    } else if (hasAnswered) {
+      return "blue.300";
+    }
+    return "transparent";
+  }, [roundResult, hasAnswered]);
+
   return (
     <ChakraBox
       display="flex"
@@ -104,7 +115,7 @@ const VideoTile = ({
         w={tileSize}
         background="gray.200"
         borderRadius="16px"
-        borderColor="green.500"
+        borderColor={borderColor}
         borderWidth={hasAnswered ? "8px" : "0px"}
         overflow="hidden"
       >
@@ -120,7 +131,7 @@ const VideoTile = ({
           />
         ) : (
           <Avatar size="xl" name={name}>
-            {hasAnswered && <AvatarBadge boxSize="1.25em" bg="blue.500" />}
+            {hasAnswered && <AvatarBadge boxSize="1.25em" bg="blue.300" />}
           </Avatar>
         )}
       </Center>

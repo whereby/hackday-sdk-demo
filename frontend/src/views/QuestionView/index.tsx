@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
+import { Flex, Box, Button, Center, Heading, Text } from "@chakra-ui/react";
 
-import Title from "../../components/AnimatedTitle";
+import AnimatedTitle from "../../components/AnimatedTitle";
 import AnswerCard from "../../components/AnswerCard";
 
 interface Question {
@@ -38,7 +38,7 @@ const QuestionView = ({
     correctAlternative = "",
   } = question || {};
 
-  // TODO: Fix
+  // TODO: Add new background
   const boxVariants = {
     visible: {
       // backgroundColor: ["#60F", "#09F", "#FA0"],
@@ -69,58 +69,54 @@ const QuestionView = ({
       // height="70vh"
       variants={boxVariants}
       animate="visible"
-      p="10"
+      p="4"
       // overflow="auto"
     >
       <Heading>
         {Boolean(currentAnswer) || reveal ? (
-          <Text as="h1">{questionText}</Text>
+          <Text as="h1" fontWeight="800">
+            {questionText}
+          </Text>
         ) : (
-          <Title>{questionText}</Title>
+          <AnimatedTitle>{questionText}</AnimatedTitle>
         )}
       </Heading>
-      <Center justifyContent="space-evenly" alignItems="center" h="100%">
-        {Object.keys(alternatives).map((k) => {
-          return (
-            <AnswerCard
-              isCorrect={question?.correctAlternative === k}
-              reveal={reveal}
-              key={k}
-              locked={!!currentAnswer}
-              isSelected={currentAnswer === k}
-              answerText={alternatives[k]}
-              onSelected={() => handleClick(k)}
-            />
-          );
-        })}
-        {reveal && (
-          <Heading>
-            The correct answer is: {alternatives[correctAlternative]}
-          </Heading>
-        )}
+      <Center
+        justifyContent="space-evenly"
+        flexDirection="column"
+        alignItems="center"
+        h="100%"
+        w="100%"
+      >
+        <Flex gap="4" my="4" w="100%" h="240px">
+          {Object.keys(alternatives).map((k) => {
+            return (
+              <AnswerCard
+                isCorrect={question?.correctAlternative === k}
+                reveal={reveal}
+                key={k}
+                locked={!!currentAnswer}
+                isSelected={currentAnswer === k}
+                answerText={alternatives[k]}
+                onSelected={() => handleClick(k)}
+              />
+            );
+          })}
+        </Flex>
 
-        {reveal && isQuizMaster && (
-          <Button
-            onClick={() => {
-              nextQuestionAction();
-            }}
-          >
-            Next Question
-          </Button>
-        )}
-        {/* 
-      // {reveal && <Heading>The correct answer is: {correctAlternative}</Heading>} */}
-        {!reveal && isQuizMaster && (
-          <Box>
-            <Button
-              onClick={() => {
-                revealQuestionAnswers();
-              }}
-            >
-              Reveal answers
-            </Button>
-          </Box>
-        )}
+        <Heading my="4" visibility={reveal ? "inherit" : "hidden"}>
+          The correct answer is: {alternatives[correctAlternative]}
+        </Heading>
+
+        <Box>
+          {reveal && isQuizMaster && (
+            <Button onClick={nextQuestionAction}>Next Question</Button>
+          )}
+
+          {!reveal && isQuizMaster && (
+            <Button onClick={revealQuestionAnswers}>Reveal answers</Button>
+          )}
+        </Box>
       </Center>
     </MotionBox>
   );

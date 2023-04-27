@@ -7,25 +7,20 @@ const config: ThemeConfig = {
 
 const overrides = {
   fonts: {
-    heading: `'Bangers', cursive`,
-    body: `'Bangers', cursive`,
+    // heading: `'Bangers', cursive`,
+    // body: `'Bangers', cursive`,
+    heading: `'Urbanist', sans-serif`,
+    body: `'Urbanist', sans-serif`,
   },
   components: {
     Heading: {
       baseStyle: {
-        letterSpacing: "2px",
-        fontWeight: 300,
+        fontWeight: 800,
       },
     },
     Text: {
       baseStyle: {
-        letterSpacing: "1px",
-        fontWeight: 300,
-      },
-    },
-    Button: {
-      baseStyle: {
-        letterSpacing: "1px",
+        fontWeight: 400,
       },
     },
   },
