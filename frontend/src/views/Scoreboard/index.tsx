@@ -1,6 +1,8 @@
 import { GameState, RoomConnectionRef } from "../../useQuizGame";
 import { motion } from "framer-motion";
 
+import Participants from "../../components/Participants";
+
 interface ScoreboardProps {
   quizState: GameState;
   roomConnection: RoomConnectionRef;
@@ -35,6 +37,14 @@ export default function Scoreboard({
 
   return (
     <div style={style}>
+      <motion.div layout>
+        <Participants
+          roomConnection={roomConnection}
+          quizState={quizState}
+          variant="small"
+          screen="scoreboard"
+        />
+      </motion.div>
       {scoreboard.map((s) => (
         <motion.h1 key={s.participantId} layout>
           {s.score} - {s.participantName}

@@ -9,11 +9,18 @@ import VideoTile from "../VideoTile";
 interface ParticipantsProps {
   roomConnection: RoomConnectionRef;
   quizState: GameState;
+  variant?: "default" | "small";
+  screen?: "scoreboard" | "game";
 }
 
 const SORTING_TIMEOUT = 4000;
 
-const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
+const Participants = ({
+  roomConnection,
+  quizState,
+  variant = "default",
+  screen = "game",
+}: ParticipantsProps) => {
   const { state: roomState } = roomConnection;
   const { remoteParticipants, localParticipant } = roomState;
 
@@ -53,6 +60,18 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
     });
     setTiles(shuffled);
   }, [tiles, scores]);
+
+  // Sort on scoreboard view
+  useEffect(() => {
+    if (screen === "scoreboard") {
+      const timer = setTimeout(() => {
+        sortTiles();
+      }, SORTING_TIMEOUT);
+
+      return () => clearTimeout(timer);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen]);
 
   // Should only be triggered when revealAnswers changes - don't change dep array
   useEffect(() => {
@@ -120,7 +139,12 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
 
   return (
     <Flex gap="4" height="35vh">
-      <Flex marginLeft="80px">
+      <Flex
+        marginLeft="80px"
+        flexDir={screen === "scoreboard" ? "column" : "row"}
+        justifyContent={screen === "scoreboard" ? "center" : "flex-start"}
+        w="100%"
+      >
         <AnimatePresence>
           {tiles.map((participant) => {
             if (!participant) return null;
@@ -136,6 +160,7 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
                   name={`${displayName} - ${scores[id] || 0} points`}
                   hasAnswered={hasParticipantAnswered}
                   roundResult={roundResults[id]}
+                  variant={variant}
                 />
               </motion.div>
             );

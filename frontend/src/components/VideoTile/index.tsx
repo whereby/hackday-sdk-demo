@@ -12,6 +12,7 @@ interface VideoTileProps {
   stream: MediaStream | undefined;
   hasAnswered?: boolean;
   roundResult?: "correct" | "incorrect" | "no_vote" | null;
+  variant?: "default" | "small";
 }
 
 const ChakraBox = motion(Box);
@@ -23,6 +24,7 @@ const VideoTile = ({
   hasAnswered,
   roundResult,
   muted,
+  variant = "default",
 }: VideoTileProps) => {
   const [scope, animate] = useAnimate();
 
@@ -77,6 +79,8 @@ const VideoTile = ({
     }
   }, [correctAnimation, popAnimation, roundResult]);
 
+  const tileSize = variant === "small" ? "120px" : "240px";
+
   return (
     <ChakraBox
       display="flex"
@@ -96,8 +100,8 @@ const VideoTile = ({
       }}
     >
       <Center
-        h="240px"
-        w="240px"
+        h={tileSize}
+        w={tileSize}
         background="gray.200"
         borderRadius="16px"
         borderColor="green.500"
