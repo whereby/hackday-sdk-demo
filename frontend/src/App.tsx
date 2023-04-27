@@ -29,7 +29,8 @@ function App() {
       ) : (
         <Game localMedia={localMedia} name={name} />
       )}
-      {localStream && (
+      <Box position="absolute" left="0" bottom="0">
+       {localStream && (
         <DeviceControls
           floating={isConnected}
           toggleCameraEnabled={toggleCameraEnabled}
@@ -37,6 +38,7 @@ function App() {
           localStream={localStream}
         />
       )}
+      </Box>
     </Box>
   );
 }

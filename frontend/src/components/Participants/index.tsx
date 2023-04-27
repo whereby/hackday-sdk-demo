@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import { motion, Reorder, AnimatePresence, usePresence } from "framer-motion";
 
 import { RoomConnectionRef, GameState } from "../../useQuizGame";
@@ -111,7 +111,8 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
 
   return (
     <Flex gap="4" height="35vh" overflow="auto">
-      <Button onClick={sortTiles}>Shuffle</Button>
+      <Button onClick={sortTiles} position="absolute" left="0" bottom="10" zIndex="100">Shuffle</Button> 
+      <Flex marginLeft="80px">
       <AnimatePresence>
         {tiles.map((participant) => {
           if (!participant) return null;
@@ -131,6 +132,7 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
           );
         })}
       </AnimatePresence>
+      </Flex>
     </Flex>
   );
 };

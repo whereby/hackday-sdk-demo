@@ -20,8 +20,19 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
 
   return (
     <Box>
-      <Box my="4">
-        <Heading as="h3" size="md">
+      <Box w="50%" my={4} margin="0 auto">
+        <VideoTile stream={localStream} />
+        <Flex justifyContent="center" gap="2" mt="4">
+          <Input
+            w="50%"
+            placeholder="Your name..."
+            value={name}
+            onChange={handleTextChange}
+          ></Input>
+          <Button onClick={handleClick}>Ready!</Button>
+        </Flex>
+        <Box my="4">
+        <Heading as="h3" size="md" letterSpacing="0px">
           Device setup
         </Heading>
         {cameraDevices.map((d) => (
@@ -37,18 +48,6 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
           </p>
         ))}
       </Box>
-
-      <Box w="50%" my={4} margin="0 auto">
-        <VideoTile stream={localStream} />
-        <Flex justifyContent="center" gap="2" mt="4">
-          <Input
-            w="50%"
-            placeholder="Your name..."
-            value={name}
-            onChange={handleTextChange}
-          ></Input>
-          <Button onClick={handleClick}>Ready!</Button>
-        </Flex>
       </Box>
     </Box>
   );
