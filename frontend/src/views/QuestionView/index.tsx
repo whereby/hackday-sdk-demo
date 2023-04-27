@@ -1,3 +1,4 @@
+import { useState, memo } from "react";
 import { Box, Flex, Wrap, Center, Heading } from "@chakra-ui/react";
 import AnswerCard from "../../components/AnswerCard";
 import QuestionCard from "../../components/QuestionCard";
@@ -9,29 +10,29 @@ import { useRoomConnection } from "@whereby.com/browser-sdk";
 import { current } from "@reduxjs/toolkit";
 type RoomConnectionRef = ReturnType<typeof useRoomConnection>;
 
-export default function QuestionView({
-  quizState,
-  localMedia,
-  roomConnection,
-  quizActions,
-}: {
-  quizState: GameState;
-  localMedia: any;
-  roomConnection: RoomConnectionRef;
-  quizActions: GameActions;
-}) {
-  const { state } = roomConnection;
-  const { remoteParticipants } = state;
-  const { localStream } = localMedia.state;
+interface Question {
+  question: string;
+  alternatives: Record<string, string>;
+  correctAlternative: string;
+}
 
-  const shouldReveal = quizState.revealAnswers;
-  const participantId = roomConnection.state.localParticipant?.id || "unknown";
-  const currentAnswer =
-    quizState?.currentAnswers?.[participantId]?.["alternative"] ?? null;
-  console.log("Current answer", currentAnswer);
+interface QuestionViewProps {
+  answerQuestion: (string) => void;
+  question: Question | null;
+}
 
-  const MotionBox = motion(Box);
+const MotionBox = motion(Box);
 
+const QuestionView = ({ question, answerQuestion }: QuestionViewProps) => {
+  const [currentAnswer, setCurrentAnswer] = useState<string | null>(null);
+
+  const {
+    question: questionText = "",
+    alternatives = [],
+    correctAlternative = {},
+  } = question || {};
+
+  // TODO: Fix
   const boxVariants = {
     visible: {
       backgroundColor: ["#60F", "#09F", "#FA0"],
@@ -45,8 +46,13 @@ export default function QuestionView({
     },
   };
 
+  const handleClick = (answer) => {
+    setCurrentAnswer(answer);
+  };
+
   return (
     <MotionBox
+      key={questionText}
       // bgGradient="linear(to-r, grey, blue)"
       // alignItems="center"
       // justifyContent="center"
@@ -58,45 +64,26 @@ export default function QuestionView({
       p="10"
     >
       <Heading>
-        <Title>
-          {quizState.currentQuestion?.question || "No questions yet"}
-        </Title>
+        <Title>{questionText}</Title>
       </Heading>
+
       {/* TODO: use question view to change bg colour */}
-      {/* <QuestionCard
-        id="1"
-        questionText={quizState.currentQuestion?.question || "No questions yet"}
-      /> */}
 
       <Center justifyContent="space-evenly" alignItems="center" h="100%">
-        {Object.keys(quizState.currentQuestion?.alternatives || {}).map((k) => {
+        {Object.keys(alternatives).map((k) => {
           return (
             <AnswerCard
               key={k}
               locked={!!currentAnswer}
               isSelected={currentAnswer === k}
-              answerText={quizState.currentQuestion?.alternatives[k]}
-              onSelected={() => quizActions.postAnswer(k)}
+              answerText={alternatives[k]}
+              onSelected={() => handleClick(k)}
             />
           );
         })}
       </Center>
     </MotionBox>
   );
-}
+};
 
-// <Flex alignItems="center" justifyContent="center">
-//   <VideoTile stream={localStream} hasAnswered={hasAnswered} />
-//   {remoteParticipants.map((p) => {
-//     const { id, stream, displayName } = p;
-//     const hasParticipantAnswered = !!(quizState.currentAnswers || {})[id];
-//     return (
-//       <VideoTile
-//         key={id}
-//         stream={stream}
-//         name={displayName}
-//         hasAnswered={hasParticipantAnswered}
-//       />
-//     );
-//   })}
-// </Flex>
+export default memo(QuestionView);

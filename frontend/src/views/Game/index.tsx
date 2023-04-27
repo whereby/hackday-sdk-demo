@@ -15,13 +15,11 @@ interface LobbyViewProps {
 }
 
 const Game = ({ localMedia }: LobbyViewProps) => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+
   const roomConnection = useRoomConnection(WHEREBY_ROOM, {
     localMedia,
     logger: console,
-    localMediaConstraints: {
-      audio: false,
-      video: true,
-    },
   });
 
   const { state: roomState } = roomConnection;
@@ -42,10 +40,8 @@ const Game = ({ localMedia }: LobbyViewProps) => {
       case "question":
         return (
           <QuestionView
-            quizState={quizState}
-            quizActions={quizActions}
-            localMedia={localMedia}
-            roomConnection={roomConnection}
+            question={quizState.currentQuestion}
+            answerQuestion={quizActions.postAnswer}
           />
         );
       case "end":

@@ -1,10 +1,13 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Flex, Text } from "@chakra-ui/react";
 
 interface TitleProps {
   children: string;
 }
+
+const MotionFlex = motion(Flex);
+const MotionText = motion(Text);
 
 const Title = ({ children }: TitleProps) => {
   const words = children.split(" ");
@@ -38,9 +41,6 @@ const Title = ({ children }: TitleProps) => {
     },
   };
 
-  const MotionFlex = motion(Flex);
-  const MotionText = motion(Text);
-
   return (
     <MotionFlex
       overflow="hidden"
@@ -59,4 +59,4 @@ const Title = ({ children }: TitleProps) => {
   );
 };
 
-export default Title;
+export default memo(Title);

@@ -9,7 +9,7 @@ import "./App.css";
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
-  const localMedia = useLocalMedia({ audio: false, video: true });
+  const localMedia = useLocalMedia({ audio: false, video: false });
 
   return (
     <Box h="100%" textAlign="center">

@@ -11,10 +11,10 @@ interface LobbyViewProps {
   quizActions: GameActions;
 }
 
+const MotionButton = motion(Button);
+
 const LobbyView = ({ playerCount, quizActions }: LobbyViewProps) => {
   const [buttonClicked, setButtonClicked] = useState(false);
-
-  const MotionButton = motion(Button);
 
   // Just playing around with variants here
   const buttonVariants = {

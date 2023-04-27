@@ -138,6 +138,8 @@ export default function useQuizGame(roomConnection: RoomConnectionRef): {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { state: roomState, actions: roomActions } = roomConnection;
 
+  console.log(state);
+
   useEffect(() => {
     if (roomState.mostRecentChatMessage) {
       try {

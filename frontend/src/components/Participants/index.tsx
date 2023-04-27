@@ -19,9 +19,6 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
     quizState.currentAnswers && quizState.currentAnswers[selfId]
   );
 
-  console.log(quizState);
-  console.log(hasAnswered);
-
   const MotionFlex = motion(Flex);
 
   return (
