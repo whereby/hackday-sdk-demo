@@ -19,13 +19,14 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
 
   const [tiles, setTiles] = useState([...remoteParticipants, localParticipant]);
   const [tilesAreSorted, setTilesAreSorted] = useState(false);
+  // const [isFinalScore, setIsFinalScore] = useState(false);
   const [isPresent, safeToRemove] = usePresence();
 
   const [shouldAnimateResult, setShouldAnimateResult] = useState<{
     [participantId: string]: "correct" | "incorrect" | "no_vote";
   }>({});
 
-  const { revealAnswers, currentAnswers } = quizState;
+  const { revealAnswers, currentAnswers , scores} = quizState;
 
   const sortTiles = useCallback(() => {
     if (!tilesAreSorted) {
@@ -68,7 +69,21 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
     tiles,
   ]);
 
-  console.log(shouldAnimateResult);
+  //  const scoreboard = allParticipants
+  // .map((p) => {
+  //   return {
+  //     participantId: p.id,
+  //     participantName: p.displayName || "Unknown quizzer",
+  //     score: scores[p.id] || 0,
+  //   };
+  // })
+  // .sort((a, b) => b.score - a.score);
+
+  // useEffect(() => {
+  //   if(quizState.screen === "end")
+  // }
+
+  // console.log(shouldAnimateResult);
 
   useEffect(() => {
     const allParticipants = [...remoteParticipants, localParticipant];
@@ -95,7 +110,7 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
   };
 
   return (
-    <Flex gap="4">
+    <Flex gap="4" height="35vh" overflow="auto">
       <Button onClick={sortTiles}>Shuffle</Button>
       <AnimatePresence>
         {tiles.map((participant) => {

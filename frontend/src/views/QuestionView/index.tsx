@@ -80,11 +80,11 @@ const QuestionView = ({
       // justifyContent="center"
       // background="purple.200"
       gap={6}
-      height="100%"
+      height="70vh"
       variants={boxVariants}
       animate="visible"
       p="10"
-    >
+      overflow="auto"    >
       <Heading>
         <Title>{questionText}</Title>
       </Heading>
@@ -111,6 +111,8 @@ const QuestionView = ({
           </Heading>
         )}
       </Center>
+
+
 
       {reveal && isQuizMaster && (
         <Button
