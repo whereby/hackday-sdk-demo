@@ -48,6 +48,7 @@ const QuestionView = ({ question, answerQuestion }: QuestionViewProps) => {
 
   const handleClick = (answer) => {
     setCurrentAnswer(answer);
+    answerQuestion(answer);
   };
 
   return (
