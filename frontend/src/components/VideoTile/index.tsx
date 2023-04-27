@@ -9,13 +9,8 @@ interface VideoTileProps {
   id?: string;
   name?: string;
   stream: MediaStream | undefined;
-  position?: {
-    x?: number;
-    y?: number;
-  };
   hasAnswered?: boolean;
-  animation?: string;
-  questionResult?: "correct" | "incorrect" | "no_vote" | null;
+  roundResult?: "correct" | "incorrect" | "no_vote" | null;
 }
 
 const ChakraBox = motion(Box);
@@ -24,15 +19,10 @@ const VideoTile = ({
   id,
   name,
   stream,
-  position,
-  animation,
   hasAnswered,
-  questionResult,
+  roundResult,
 }: VideoTileProps) => {
   const [scope, animate] = useAnimate();
-
-  console.log("questionResult:", questionResult);
-  const { x, y } = position || {};
 
   const popAnimation = useCallback(async () => {
     await animate(scope.current, { scale: 1.5 });
@@ -51,6 +41,11 @@ const VideoTile = ({
     await animate(scope.current, { rotate: 0 });
   }, [animate, scope]);
 
+  const correctAnimation = useCallback(async () => {
+    await animate(scope.current, { y: -120 }, { ease: "easeIn", duration: 2 });
+    await animate(scope.current, { y: 0 }, { ease: "easeIn", duration: 1 });
+  }, [animate, scope]);
+
   useEffect(() => {
     popAnimation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,14 +60,12 @@ const VideoTile = ({
   }, [hasAnswered, answeredAnimation]);
 
   useEffect(() => {
-    console.log("oi");
-    if (questionResult === "correct") {
-      console.log("oi again");
-      rotateAnimation();
-    } else if (questionResult === "incorrect") {
+    if (roundResult === "correct") {
+      correctAnimation();
+    } else if (roundResult === "incorrect") {
       popAnimation();
     }
-  }, [popAnimation, questionResult, rotateAnimation]);
+  }, [correctAnimation, popAnimation, roundResult]);
 
   return (
     <ChakraBox
@@ -81,7 +74,6 @@ const VideoTile = ({
       alignItems="center"
       margin="2"
       ref={scope}
-      animate={{ x, y }}
       whileHover={{ scale: [null, 1.1, 1.05], rotate: 1 }}
       // @ts-ignore no problem in operation, although type error appears.
       transition={{
@@ -117,25 +109,6 @@ const VideoTile = ({
           </Avatar>
         )}
       </Center>
-      {/* {stream ? (
-        <Center
-          as={VideoView}
-          key={id}
-          stream={stream}
-          h="240px"
-          w="240px"
-          borderRadius="16px"
-          objectFit="cover"
-          borderColor="green.500"
-          borderWidth={hasAnswered ? "8px" : "0px"}
-        ></Center>
-      ) : (
-        <Center h="240px" w="240px">
-          <Avatar size="xl" name={name}>
-            {hasAnswered && <AvatarBadge boxSize="1.25em" bg="green.500" />}
-          </Avatar>
-        </Center>
-      )} */}
       <Text>{name}</Text>
     </ChakraBox>
   );

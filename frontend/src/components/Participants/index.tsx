@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback, memo } from "react";
-import { Box, Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
-import { motion, Reorder, AnimatePresence, usePresence } from "framer-motion";
+import { useState, useEffect, useCallback, memo } from "react";
+import { Button, Flex } from "@chakra-ui/react";
+import { motion, AnimatePresence, usePresence } from "framer-motion";
 
 import { RoomConnectionRef, GameState } from "../../useQuizGame";
 
@@ -10,85 +10,72 @@ interface ParticipantsProps {
   roomConnection: RoomConnectionRef;
   quizState: GameState;
 }
-// const MotionFlex = motion(Flex);
 
 const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
   const { state: roomState } = roomConnection;
   const { remoteParticipants, localParticipant } = roomState;
-  const { id } = localParticipant || {};
 
-  const [tiles, setTiles] = useState([...remoteParticipants, localParticipant]);
-  const [tilesAreSorted, setTilesAreSorted] = useState(false);
   // const [isFinalScore, setIsFinalScore] = useState(false);
+  const [tiles, setTiles] = useState([...remoteParticipants, localParticipant]);
   const [isPresent, safeToRemove] = usePresence();
-
-  const [shouldAnimateResult, setShouldAnimateResult] = useState<{
+  const [roundResults, setRoundResults] = useState<{
     [participantId: string]: "correct" | "incorrect" | "no_vote";
   }>({});
 
-  const { revealAnswers, currentAnswers , scores} = quizState;
+  const { revealAnswers, currentAnswers, currentQuestion, scores } = quizState;
+  // TODO: fix currentAnswers interface
 
   const sortTiles = useCallback(() => {
-    if (!tilesAreSorted) {
-      const shuffled = [...tiles].sort((a, b) => 0.5 - Math.random());
-      setTiles(shuffled);
-      setTilesAreSorted(true);
-    }
-  }, [tiles, tilesAreSorted]);
+    console.log("Sorting tiles!");
+    // TODO: sort by score
+    const shuffled = [...tiles].sort((a, b) => 0.5 - Math.random());
+    setTiles(shuffled);
+  }, [tiles]);
 
-  // Determine correct / incorrect answers once reveal goes from false -> true
+  // Should only be triggered when revealAnswers changes - don't change dep array
   useEffect(() => {
-    if (quizState.revealAnswers) {
-      setTilesAreSorted(false);
-      let res = {};
-      if (!currentAnswers) return;
-
-      tiles.forEach((t) => {
-        if (!t) return;
-        res[t.id] =
-          currentAnswers[t.id] === quizState.currentQuestion?.correctAlternative
-            ? "correct"
-            : "incorrect";
-      });
-
-      console.log(res);
-      setShouldAnimateResult(res);
+    if (revealAnswers) {
       const timer = setTimeout(() => {
         sortTiles();
       }, 3000);
 
       return () => clearTimeout(timer);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [revealAnswers]);
+
+  // Should only be triggered when participants change
+  useEffect(() => {
+    const allParticipants = [...remoteParticipants, localParticipant];
+
+    setTiles(allParticipants);
+  }, [remoteParticipants, localParticipant]);
+
+  useEffect(() => {
+    if (revealAnswers) {
+      if (!currentAnswers) return;
+
+      const results = tiles.reduce((res, tile) => {
+        if (!tile) return res;
+
+        const answer = currentQuestion?.correctAlternative;
+        const result =
+          currentAnswers[tile.id] === answer ? "correct" : "incorrect";
+
+        return { ...res, [tile.id]: result };
+      }, {});
+
+      setRoundResults(results);
     } else {
-      setShouldAnimateResult({});
+      setRoundResults({});
     }
   }, [
     currentAnswers,
-    quizState.currentQuestion?.correctAlternative,
-    quizState.revealAnswers,
+    currentQuestion?.correctAlternative,
+    revealAnswers,
     sortTiles,
     tiles,
   ]);
-
-  //  const scoreboard = allParticipants
-  // .map((p) => {
-  //   return {
-  //     participantId: p.id,
-  //     participantName: p.displayName || "Unknown quizzer",
-  //     score: scores[p.id] || 0,
-  //   };
-  // })
-  // .sort((a, b) => b.score - a.score);
-
-  // useEffect(() => {
-  //   if(quizState.screen === "end")
-  // }
-
-  // console.log(shouldAnimateResult);
-
-  useEffect(() => {
-    const allParticipants = [...remoteParticipants, localParticipant];
-    setTiles(allParticipants);
-  }, [remoteParticipants, localParticipant]);
 
   const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 };
 
@@ -110,28 +97,36 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
   };
 
   return (
-    <Flex gap="4" height="35vh" overflow="auto">
-      <Button onClick={sortTiles} position="absolute" left="0" bottom="10" zIndex="100">Shuffle</Button> 
+    <Flex gap="4" height="35vh">
+      <Button
+        onClick={sortTiles}
+        position="absolute"
+        left="0"
+        bottom="10"
+        zIndex="100"
+      >
+        Shuffle
+      </Button>
       <Flex marginLeft="80px">
-      <AnimatePresence>
-        {tiles.map((participant) => {
-          if (!participant) return null;
+        <AnimatePresence>
+          {tiles.map((participant) => {
+            if (!participant) return null;
 
-          const { id, stream, displayName } = participant;
-          const hasParticipantAnswered = !!(currentAnswers || {})[id];
+            const { id, stream, displayName } = participant;
+            const hasParticipantAnswered = !!(currentAnswers || {})[id];
 
-          return (
-            <motion.div {...animationProps} key={id}>
-              <VideoTile
-                stream={stream}
-                name={displayName}
-                hasAnswered={hasParticipantAnswered}
-                questionResult={shouldAnimateResult[id]}
-              />
-            </motion.div>
-          );
-        })}
-      </AnimatePresence>
+            return (
+              <motion.div {...animationProps} key={id}>
+                <VideoTile
+                  stream={stream}
+                  name={displayName}
+                  hasAnswered={hasParticipantAnswered}
+                  roundResult={roundResults[id]}
+                />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </Flex>
     </Flex>
   );

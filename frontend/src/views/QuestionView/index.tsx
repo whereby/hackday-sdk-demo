@@ -37,11 +37,9 @@ const QuestionView = ({
   reveal,
   nextQuestionAction,
   revealQuestionAnswers,
-  isQuizMaster
+  isQuizMaster,
 }: QuestionViewProps) => {
   //const [currentAnswer, setCurrentAnswer] = useState<string | null>(null);
-
-  console.log("currentAnswer: ", currentAnswer);
 
   const {
     question: questionText = "",
@@ -70,8 +68,6 @@ const QuestionView = ({
     }
   };
 
-  console.log("Questions", questions);
-
   return (
     <MotionBox
       key={questionText}
@@ -80,11 +76,12 @@ const QuestionView = ({
       // justifyContent="center"
       // background="purple.200"
       gap={6}
-      height="70vh"
+      // height="70vh"
       variants={boxVariants}
       animate="visible"
       p="10"
-      overflow="auto"    >
+      // overflow="auto"
+    >
       <Heading>
         <Title>{questionText}</Title>
       </Heading>
@@ -111,26 +108,29 @@ const QuestionView = ({
           </Heading>
         )}
 
-      {reveal && isQuizMaster && (
-        <Button
-          onClick={() => {
-            nextQuestionAction();
-          }}
-        >
-          Next Question
-        </Button>
-      )}
-      {/* 
+        {reveal && isQuizMaster && (
+          <Button
+            onClick={() => {
+              nextQuestionAction();
+            }}
+          >
+            Next Question
+          </Button>
+        )}
+        {/* 
       // {reveal && <Heading>The correct answer is: {correctAlternative}</Heading>} */}
-      {!reveal && isQuizMaster && (
-        <Box>
-          <Button onClick={() => {revealQuestionAnswers()}}>Reveal answers</Button>
-        </Box>
-      )}
+        {!reveal && isQuizMaster && (
+          <Box>
+            <Button
+              onClick={() => {
+                revealQuestionAnswers();
+              }}
+            >
+              Reveal answers
+            </Button>
+          </Box>
+        )}
       </Center>
-
-
-
     </MotionBox>
   );
 };

@@ -146,9 +146,6 @@ export default function useQuizGame(
   });
   const { state: roomState, actions: roomActions } = roomConnection;
   const [questionCounter, setQuestionCounter] = useState(1);
-  console.log("Counter", questionCounter);
-
-  console.log(state);
 
   useEffect(() => {
     if (roomState.mostRecentChatMessage) {
@@ -185,12 +182,14 @@ export default function useQuizGame(
       nextQuestion() {
         // TODO: Check if user is quiz master?
         // Separate type or just straight to question
-        if(questionCounter > questions.length-1) { 
-          console.log("The quiz is over");  
+        if (questionCounter > questions.length - 1) {
+          console.log("The quiz is over");
           roomActions.sendChatMessage(
-          JSON.stringify({
-            type: "END",
-          }));  };
+            JSON.stringify({
+              type: "END",
+            })
+          );
+        }
         setQuestionCounter(questionCounter + 1);
         roomActions.sendChatMessage(JSON.stringify(questions[questionCounter]));
       },

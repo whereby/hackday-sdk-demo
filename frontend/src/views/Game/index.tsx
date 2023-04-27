@@ -58,9 +58,6 @@ const Game = ({ localMedia, name }: LobbyViewProps) => {
 
   const gameState = useMemo(() => quizState, [quizState]);
 
-  console.log("QuizState");
-  console.log(quizState);
-
   const { postAnswer, nextQuestion, revealAnswers } = quizActions;
 
   const CurrentScreen = () => {
@@ -100,10 +97,10 @@ const Game = ({ localMedia, name }: LobbyViewProps) => {
 
   return (
     <Flex flexDirection="column" height="100%" background="red.200">
-      <Box flexGrow="2" height="100%">
+      <Box flexGrow="3" height="100%">
         <CurrentScreen />
       </Box>
-      <Box flexGrow="1" p="4" background="white">
+      <Box flexGrow="2" p="4" background="white">
         <Participants roomConnection={roomConnection} quizState={quizState} />
       </Box>
     </Flex>

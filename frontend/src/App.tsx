@@ -11,7 +11,7 @@ import DeviceControls from "./views/DeviceControls";
 function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [name, setName] = useState("");
-  const localMedia = useLocalMedia({ audio: false, video: true });
+  const localMedia = useLocalMedia({ audio: false, video: false });
 
   const { localStream } = localMedia.state;
   const { toggleCameraEnabled, toggleMicrophoneEnabled } = localMedia.actions;
@@ -30,14 +30,14 @@ function App() {
         <Game localMedia={localMedia} name={name} />
       )}
       <Box position="absolute" left="0" bottom="0">
-       {localStream && (
-        <DeviceControls
-          floating={isConnected}
-          toggleCameraEnabled={toggleCameraEnabled}
-          toggleMicrophoneEnabled={toggleMicrophoneEnabled}
-          localStream={localStream}
-        />
-      )}
+        {localStream && (
+          <DeviceControls
+            floating={isConnected}
+            toggleCameraEnabled={toggleCameraEnabled}
+            toggleMicrophoneEnabled={toggleMicrophoneEnabled}
+            localStream={localStream}
+          />
+        )}
       </Box>
     </Box>
   );
