@@ -110,9 +110,6 @@ const QuestionView = ({
             The correct answer is: {alternatives[correctAlternative]}
           </Heading>
         )}
-      </Center>
-
-
 
       {reveal && isQuizMaster && (
         <Button
@@ -130,6 +127,10 @@ const QuestionView = ({
           <Button onClick={() => {revealQuestionAnswers()}}>Reveal answers</Button>
         </Box>
       )}
+      </Center>
+
+
+
     </MotionBox>
   );
 };
