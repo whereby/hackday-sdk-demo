@@ -79,7 +79,7 @@ const Game = ({ localMedia }: LobbyViewProps) => {
             currentAnswer={quizCurrentAnswer}
             question={quizCurrentQuestion}
             answerQuestion={postAnswer}
-            nextQuestionAnswer={nextQuestion}
+            nextQuestionAction={nextQuestion}
             revealQuestionAnswers={revealAnswers}
           />
         );

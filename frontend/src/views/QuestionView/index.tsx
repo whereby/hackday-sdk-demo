@@ -24,7 +24,7 @@ interface QuestionViewProps {
   currentAnswer: string | null;
   reveal: boolean;
   revealQuestionAnswers: () => void;
-  nextQuestionAnswer: () => void;
+  nextQuestionAction: () => void;
   isQuizMaster: boolean;
 }
 
@@ -35,8 +35,9 @@ const QuestionView = ({
   answerQuestion,
   currentAnswer,
   reveal,
-  nextQuestionAnswer,
-  isQuizMaster,
+  nextQuestionAction,
+  revealQuestionAnswers,
+  isQuizMaster
 }: QuestionViewProps) => {
   //const [currentAnswer, setCurrentAnswer] = useState<string | null>(null);
 
@@ -114,7 +115,7 @@ const QuestionView = ({
       {reveal && isQuizMaster && (
         <Button
           onClick={() => {
-            nextQuestionAnswer();
+            nextQuestionAction();
           }}
         >
           Next Question
@@ -124,7 +125,7 @@ const QuestionView = ({
       // {reveal && <Heading>The correct answer is: {correctAlternative}</Heading>} */}
       {!reveal && isQuizMaster && (
         <Box>
-          <Button onClick={() => {}}>Reveal answers</Button>
+          <Button onClick={() => {revealQuestionAnswers()}}>Reveal answers</Button>
         </Box>
       )}
     </MotionBox>

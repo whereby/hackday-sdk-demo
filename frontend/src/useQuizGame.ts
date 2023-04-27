@@ -145,7 +145,10 @@ export default function useQuizGame(
     isQuizMaster,
   });
   const { state: roomState, actions: roomActions } = roomConnection;
-  const [questionCounter, setQuestionCounter] = useState(0);
+  const [questionCounter, setQuestionCounter] = useState(1);
+  console.log("Counter", questionCounter);
+
+  console.log(state);
 
   useEffect(() => {
     if (roomState.mostRecentChatMessage) {
@@ -212,10 +215,10 @@ export default function useQuizGame(
 
       // This will only be needed if we implement quiz-master UI
       revealAnswers() {
-        if (!state.isQuizMaster) {
-          console.warn("Not authorized to reveal answers");
-          return;
-        }
+        // if (!state.isQuizMaster) {
+        //   console.warn("Not authorized to reveal answers");
+        //   return;
+        // }
 
         roomActions.sendChatMessage(
           JSON.stringify({
