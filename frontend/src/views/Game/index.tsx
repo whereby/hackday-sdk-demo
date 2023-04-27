@@ -14,6 +14,9 @@ interface LobbyViewProps {
   localMedia: LocalMediaRef;
 }
 
+const urlParams = new URLSearchParams(window.location.search);
+const isQuizMaster = !!urlParams.get("quizMaster");
+
 const Game = ({ localMedia }: LobbyViewProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
@@ -25,8 +28,10 @@ const Game = ({ localMedia }: LobbyViewProps) => {
   const { state: roomState } = roomConnection;
   const { remoteParticipants, localParticipant } = roomState;
 
-  const { state: quizState, actions: quizActions } =
-    useQuizGame(roomConnection);
+  const { state: quizState, actions: quizActions } = useQuizGame(
+    roomConnection,
+    { isQuizMaster }
+  );
 
   const quizCurrentScreen = useMemo(() => quizState.screen, [quizState.screen]);
   const quizCurrentQuestion = useMemo(
@@ -63,11 +68,13 @@ const Game = ({ localMedia }: LobbyViewProps) => {
           <LobbyView
             quizActions={quizActions}
             playerCount={remoteParticipants.length + 1}
+            isQuizMaster={isQuizMaster}
           />
         );
       case "question":
         return (
           <QuestionView
+            isQuizMaster={isQuizMaster}
             reveal={quizReveal}
             currentAnswer={quizCurrentAnswer}
             question={quizCurrentQuestion}

@@ -128,20 +128,24 @@ function reducer(state: GameState, event: GameEvents): GameState {
         revealAnswers: false,
       };
     default:
-      throw state;
+      console.log("Unknown command", event);
+      return state;
   }
 }
 
-export default function useQuizGame(roomConnection: RoomConnectionRef): {
+export default function useQuizGame(
+  roomConnection: RoomConnectionRef,
+  { isQuizMaster }: { isQuizMaster: boolean }
+): {
   state: GameState;
   actions: GameActions;
 } {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    isQuizMaster,
+  });
   const { state: roomState, actions: roomActions } = roomConnection;
   const [questionCounter, setQuestionCounter] = useState(0);
-  console.log("Counter", questionCounter);
-
-  console.log(state);
 
   useEffect(() => {
     if (roomState.mostRecentChatMessage) {

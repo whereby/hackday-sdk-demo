@@ -7,13 +7,18 @@ import Title from "../../components/Title";
 import { GameActions } from "../../useQuizGame";
 
 interface LobbyViewProps {
+  isQuizMaster: boolean;
   playerCount: number;
   quizActions: GameActions;
 }
 
 const MotionButton = motion(Button);
 
-const LobbyView = ({ playerCount, quizActions }: LobbyViewProps) => {
+const LobbyView = ({
+  playerCount,
+  quizActions,
+  isQuizMaster,
+}: LobbyViewProps) => {
   const [buttonClicked, setButtonClicked] = useState(false);
 
   // Just playing around with variants here
@@ -69,20 +74,22 @@ const LobbyView = ({ playerCount, quizActions }: LobbyViewProps) => {
         <Text fontSize="2xl" fontWeight="bold" mb="4">
           {playerCount} Players
         </Text>
-        <MotionButton
-          onClick={handleOnReady}
-          variants={buttonVariants}
-          size="md"
-          animate={buttonClicked ? "clicked" : "notClicked"}
-          whileHover="hover"
-          whileTap="pressed"
-          py="10"
-          fontSize="2xl"
-          background="green.500"
-          w="50%"
-        >
-          {buttonClicked ? "Let's go!" : "Start Game"}
-        </MotionButton>
+        {isQuizMaster && (
+          <MotionButton
+            onClick={handleOnReady}
+            variants={buttonVariants}
+            size="md"
+            animate={buttonClicked ? "clicked" : "notClicked"}
+            whileHover="hover"
+            whileTap="pressed"
+            py="10"
+            fontSize="2xl"
+            background="green.500"
+            w="50%"
+          >
+            {buttonClicked ? "Let's go!" : "Start Game"}
+          </MotionButton>
+        )}
       </Flex>
     </Box>
   );
