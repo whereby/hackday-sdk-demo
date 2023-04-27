@@ -8,7 +8,7 @@ const config: ThemeConfig = {
 const overrides = {
   fonts: {
     heading: `'Bangers', cursive`,
-    // body: `'Nunito', sans`,
+    body: `'Bangers', cursive`,
   },
   components: {
     Heading: {
