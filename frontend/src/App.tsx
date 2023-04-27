@@ -11,7 +11,7 @@ import DeviceControls from "./views/DeviceControls";
 function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [name, setName] = useState("");
-  const localMedia = useLocalMedia({ audio: false, video: false });
+  const localMedia = useLocalMedia({ audio: true, video: true });
 
   const { localStream } = localMedia.state;
   const { toggleCameraEnabled, toggleMicrophoneEnabled } = localMedia.actions;

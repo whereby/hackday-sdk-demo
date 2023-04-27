@@ -138,6 +138,7 @@ const Participants = ({ roomConnection, quizState }: ParticipantsProps) => {
             return (
               <motion.div {...animationProps} key={id}>
                 <VideoTile
+                  muted={localParticipant?.id === id}
                   stream={stream}
                   name={`${displayName} - ${scores[id] || 0} points`}
                   hasAnswered={hasParticipantAnswered}

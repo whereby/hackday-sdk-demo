@@ -6,6 +6,7 @@ import { VideoView } from "@whereby.com/browser-sdk";
 import "./styles.css";
 
 interface VideoTileProps {
+  muted?: boolean;
   id?: string;
   name?: string;
   stream: MediaStream | undefined;
@@ -21,6 +22,7 @@ const VideoTile = ({
   stream,
   hasAnswered,
   roundResult,
+  muted,
 }: VideoTileProps) => {
   const [scope, animate] = useAnimate();
 
@@ -98,6 +100,7 @@ const VideoTile = ({
           <Box
             as={VideoView}
             key={id}
+            muted={muted}
             stream={stream}
             w="100%"
             h="100%"

@@ -6,9 +6,15 @@ import VideoTile from "../../components/VideoTile";
 import { chakraMotionElement } from "../../utils/useChakraMotion";
 
 const PreCallView = ({ localMedia, handleOnReady }) => {
-  const { currentCameraDeviceId, cameraDevices, localStream } =
-    localMedia.state;
-  const { setCameraDevice, toggleCameraEnabled } = localMedia.actions;
+  const {
+    currentCameraDeviceId,
+    cameraDevices,
+    localStream,
+    currentMicrophoneDeviceId,
+    microphoneDevices,
+  } = localMedia.state;
+  const { setCameraDevice, toggleCameraEnabled, setMicrophoneDevice } =
+    localMedia.actions;
 
   const [name, setName] = useState("");
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -21,7 +27,7 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
   return (
     <Box>
       <Box w="50%" my={4} margin="0 auto">
-        <VideoTile stream={localStream} />
+        <VideoTile muted stream={localStream} />
         <Flex justifyContent="center" gap="2" mt="4">
           <Input
             w="50%"
@@ -32,22 +38,41 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
           <Button onClick={handleClick}>Ready!</Button>
         </Flex>
         <Box my="4">
-        <Heading as="h3" size="md" letterSpacing="0px">
-          Device setup
-        </Heading>
-        {cameraDevices.map((d) => (
-          <p
-            key={d.deviceId}
-            onClick={() => {
-              if (d.deviceId !== currentCameraDeviceId) {
-                setCameraDevice(d.deviceId);
-              }
-            }}
-          >
-            {d.label}
-          </p>
-        ))}
-      </Box>
+          <Heading as="h3" size="md" letterSpacing="0px">
+            Camera device -
+          </Heading>
+          {cameraDevices.map((d) => (
+            <p
+              key={d.deviceId}
+              onClick={() => {
+                if (d.deviceId !== currentCameraDeviceId) {
+                  setCameraDevice(d.deviceId);
+                }
+              }}
+            >
+              {d.label}{" "}
+              {currentCameraDeviceId === d.deviceId ? "(selected)" : ""}
+            </p>
+          ))}
+        </Box>
+        <Box my="4">
+          <Heading as="h3" size="md" letterSpacing="0px">
+            Microphone device -
+          </Heading>
+          {microphoneDevices.map((d) => (
+            <p
+              key={d.deviceId}
+              onClick={() => {
+                if (d.deviceId !== currentMicrophoneDeviceId) {
+                  setMicrophoneDevice(d.deviceId);
+                }
+              }}
+            >
+              {d.label}{" "}
+              {currentMicrophoneDeviceId === d.deviceId ? "(selected)" : ""}
+            </p>
+          ))}
+        </Box>
       </Box>
     </Box>
   );
