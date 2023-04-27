@@ -185,6 +185,12 @@ export default function useQuizGame(
       nextQuestion() {
         // TODO: Check if user is quiz master?
         // Separate type or just straight to question
+        if(questionCounter > questions.length-1) { 
+          console.log("The quiz is over");  
+          roomActions.sendChatMessage(
+          JSON.stringify({
+            type: "END",
+          }));  };
         setQuestionCounter(questionCounter + 1);
         roomActions.sendChatMessage(JSON.stringify(questions[questionCounter]));
       },

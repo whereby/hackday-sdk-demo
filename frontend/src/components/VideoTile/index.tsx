@@ -113,7 +113,7 @@ const VideoTile = ({
           />
         ) : (
           <Avatar size="xl" name={name}>
-            {hasAnswered && <AvatarBadge boxSize="1.25em" bg="green.500" />}
+            {hasAnswered && <AvatarBadge boxSize="1.25em" bg="blue.500" />}
           </Avatar>
         )}
       </Center>

@@ -17,7 +17,7 @@ function App() {
   const { toggleCameraEnabled, toggleMicrophoneEnabled } = localMedia.actions;
 
   return (
-    <Box h="100%" textAlign="center">
+    <Box h="100%" textAlign="center" overflow="hidden">
       {!isConnected ? (
         <PreCallView
           localMedia={localMedia}
