@@ -26,8 +26,9 @@ export default function QuestionView({
 
   const shouldReveal = quizState.revealAnswers;
   const participantId = roomConnection.state.localParticipant?.id || "unknown";
-  const currentAnswer = quizState?.currentAnswers?.[participantId]?.["alternative"] ?? null;
-  console.log("Current answer",currentAnswer)
+  const currentAnswer =
+    quizState?.currentAnswers?.[participantId]?.["alternative"] ?? null;
+  console.log("Current answer", currentAnswer);
 
   const MotionBox = motion(Box);
 

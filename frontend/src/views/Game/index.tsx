@@ -8,6 +8,7 @@ import { WHEREBY_ROOM } from "../../config/constants";
 
 import useQuizGame, { LocalMediaRef } from "../../useQuizGame";
 import QuestionView from "../QuestionView";
+import Scoreboard from "../Scoreboard";
 
 interface LobbyViewProps {
   localMedia: LocalMediaRef;
@@ -47,6 +48,14 @@ const Game = ({ localMedia }: LobbyViewProps) => {
             roomConnection={roomConnection}
           />
         );
+      case "end":
+        return (
+          <Scoreboard
+            variant={"end"}
+            quizState={quizState}
+            roomConnection={roomConnection}
+          />
+        );
       default:
         return <div>Not implemented</div>;
     }
@@ -63,6 +72,17 @@ const Game = ({ localMedia }: LobbyViewProps) => {
     </Flex>
   );
 };
+
+/**
+ * - checkboxes on answered
+ * - who answered correct
+ * - end scoreboard
+ * -
+ *
+ * bonus
+ * - start game
+ */
+
 //   <VideoView stream={participant.stream} style={{position: "absolute", top: 2, left: 2}}
 
 export default Game;

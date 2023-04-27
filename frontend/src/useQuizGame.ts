@@ -190,9 +190,7 @@ export default function useQuizGame(roomConnection: RoomConnectionRef): {
         roomActions.sendChatMessage(
           JSON.stringify({
             type: "ANSWER",
-            payload: {
-              alternative,
-            },
+            payload: alternative,
           })
         );
       },
