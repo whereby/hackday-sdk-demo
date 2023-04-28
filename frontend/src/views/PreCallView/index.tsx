@@ -21,10 +21,6 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setName(event.target.value);
 
-  const handleClick = () => {
-    handleOnReady(name);
-  };
-
   return (
     <Box>
       <Heading mt="10" mb="4">
@@ -32,15 +28,25 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
       </Heading>
       <Box w="50%" my={4} margin="0 auto">
         <VideoTile muted stream={localStream} />
-        <Flex justifyContent="center" gap="2" mt="4">
-          <Input
-            w="50%"
-            placeholder="Your name..."
-            value={name}
-            onChange={handleTextChange}
-          ></Input>
-          <Button onClick={handleClick}>Ready!</Button>
-        </Flex>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleOnReady(name);
+          }}
+        >
+          <Flex justifyContent="center" gap="2" mt="4">
+            <Input
+              autoFocus
+              w="50%"
+              placeholder="Your name..."
+              value={name}
+              onChange={handleTextChange}
+            ></Input>
+            <Button type={"submit"}>Ready!</Button>
+          </Flex>
+        </form>
+
         <Box my="4">
           <Heading as="h3" mb={"2"} size="md" letterSpacing="0px">
             Camera device
