@@ -118,6 +118,8 @@ const Participants = ({
     tiles,
   ]);
 
+  const tileSizeVariant = tiles.length > 8 ? "small" : variant;
+
   const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 };
 
   const animationProps = {
@@ -159,7 +161,7 @@ const Participants = ({
                   name={`${displayName} - ${scores[id] || 0} points`}
                   hasAnswered={hasParticipantAnswered}
                   roundResult={roundResults[id]}
-                  variant={variant}
+                  variant={tileSizeVariant}
                 />
               </motion.div>
             );

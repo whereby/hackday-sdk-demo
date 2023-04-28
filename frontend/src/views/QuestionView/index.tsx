@@ -21,8 +21,6 @@ interface QuestionViewProps {
   isQuizMaster: boolean;
 }
 
-const MotionBox = motion(Box);
-
 const QuestionView = ({
   question,
   answerQuestion,
