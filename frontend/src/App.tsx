@@ -38,16 +38,15 @@ function App() {
       ) : (
         <Game localMedia={localMedia} name={name} />
       )}
-      <Box position="absolute" left="0" bottom="0">
-        {localStream && (
-          <DeviceControls
-            floating={isConnected}
-            toggleCameraEnabled={toggleCameraEnabled}
-            toggleMicrophoneEnabled={toggleMicrophoneEnabled}
-            localStream={localStream}
-          />
-        )}
-      </Box>
+
+      {localStream && (
+        <DeviceControls
+          floating={isConnected}
+          toggleCameraEnabled={toggleCameraEnabled}
+          toggleMicrophoneEnabled={toggleMicrophoneEnabled}
+          localStream={localStream}
+        />
+      )}
     </Box>
   );
 }
