@@ -88,12 +88,8 @@ const Game = ({ localMedia, name }: LobbyViewProps) => {
   };
 
   return (
-    <Flex
-      flexDirection="column"
-      height="100%"
-      //  background="red.200"
-    >
-      <Box flexGrow="3" height="100%">
+    <Flex flexDirection="column" height="100%">
+      <Box flexGrow="3">
         <CurrentScreen />
       </Box>
       <Box flexGrow="2" p="4" background="whiteAlpha.500">
@@ -104,17 +100,5 @@ const Game = ({ localMedia, name }: LobbyViewProps) => {
     </Flex>
   );
 };
-
-/**
- * - checkboxes on answered
- * - who answered correct
- * - end scoreboard
- * -
- *
- * bonus
- * - start game
- */
-
-//   <VideoView stream={participant.stream} style={{position: "absolute", top: 2, left: 2}}
 
 export default Game;

@@ -138,7 +138,7 @@ const Participants = ({
   };
 
   return (
-    <Flex gap="4" height="35vh">
+    <Flex gap="4">
       <Flex
         flexDir={screen === "scoreboard" ? "column" : "row"}
         justifyContent={screen === "scoreboard" ? "center" : "flex-start"}

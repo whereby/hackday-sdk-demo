@@ -38,20 +38,6 @@ const QuestionView = ({
     correctAlternative = "",
   } = question || {};
 
-  // TODO: Add new background
-  const boxVariants = {
-    visible: {
-      // backgroundColor: ["#60F", "#09F", "#FA0"],
-      transition: {
-        delay: 1,
-        duration: 2,
-        ease: [0.075, 0.82, 0.165, 1],
-        // repeat: Infinity,
-        // repeatType: "reverse",
-      },
-    },
-  };
-
   const handleClick = (answer) => {
     if (!currentAnswer) {
       answerQuestion(answer);
@@ -59,18 +45,13 @@ const QuestionView = ({
   };
 
   return (
-    <MotionBox
-      // key={questionText}
-      // bgGradient="linear(to-r, grey, blue)"
-      // alignItems="center"
-      // justifyContent="center"
-      // background="purple.200"
+    <Flex
+      key={questionText}
+      flexDir="column"
+      justifyContent="center"
       gap={6}
-      // height="70vh"
-      variants={boxVariants}
-      animate="visible"
+      height="100%"
       p="4"
-      // overflow="auto"
     >
       <Heading>
         {Boolean(currentAnswer) || reveal ? (
@@ -83,12 +64,13 @@ const QuestionView = ({
       </Heading>
       <Center
         justifyContent="space-evenly"
+        gap="4"
         flexDirection="column"
         alignItems="center"
         h="100%"
         w="100%"
       >
-        <Flex gap="4" my="4" w="100%" h="240px">
+        <Flex my="4" w="100%" h="240px">
           {Object.keys(alternatives).map((k) => {
             return (
               <AnswerCard
@@ -108,7 +90,7 @@ const QuestionView = ({
           The correct answer is: {alternatives[correctAlternative]}
         </Heading>
 
-        <Box>
+        <Box mb="8">
           {reveal && isQuizMaster && (
             <Button onClick={nextQuestionAction}>Next Question</Button>
           )}
@@ -118,7 +100,7 @@ const QuestionView = ({
           )}
         </Box>
       </Center>
-    </MotionBox>
+    </Flex>
   );
 };
 
