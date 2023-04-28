@@ -28,13 +28,17 @@ export default function DeviceControls({
       position: "absolute",
       bottom: 0,
       left: 0,
+      right: 0,
     };
   }
 
   return (
-    <Box {...styles} style={style}>
+    <Box pb={"4"} {...styles} style={style}>
       {cameraTrack && (
         <IconButton
+          colorScheme={!cameraTrack.enabled ? "red" : undefined}
+          size={"lg"}
+          mr={"2"}
           aria-label="Camera"
           icon={<Icon as={cameraTrack.enabled ? FiVideo : FiVideoOff} />}
           onClick={() => {
@@ -45,6 +49,8 @@ export default function DeviceControls({
       )}
       {microphoneTrack && (
         <IconButton
+          colorScheme={!microphoneTrack.enabled ? "red" : undefined}
+          size={"lg"}
           aria-label="Microphone"
           icon={<Icon as={microphoneTrack.enabled ? FiMic : FiMicOff} />}
           onClick={() => {
