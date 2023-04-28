@@ -41,11 +41,13 @@ const PreCallView = ({ localMedia, handleOnReady }: PreCallViewProps) => {
             <Input
               autoFocus
               w="50%"
-              placeholder="Your name..."
+              placeholder="Your name... (required)"
               value={name}
               onChange={handleTextChange}
             ></Input>
-            <Button type={"submit"}>Ready!</Button>
+            <Button isDisabled={name.length === 0} type={"submit"}>
+              Ready!
+            </Button>
           </Flex>
         </form>
 
