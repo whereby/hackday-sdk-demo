@@ -61,6 +61,13 @@ const Participants = ({
     setTiles(shuffled);
   }, [scores, tiles]);
 
+  // Should only be triggered when participants change
+  useEffect(() => {
+    const allParticipants = [...remoteParticipants, localParticipant];
+
+    setTiles(allParticipants);
+  }, [remoteParticipants, localParticipant]);
+
   // Sort on scoreboard view
   useEffect(() => {
     if (screen === "scoreboard") {
@@ -84,13 +91,6 @@ const Participants = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [revealAnswers]);
-
-  // Should only be triggered when participants change
-  useEffect(() => {
-    const allParticipants = [...remoteParticipants, localParticipant];
-
-    setTiles(allParticipants);
-  }, [remoteParticipants, localParticipant]);
 
   useEffect(() => {
     if (revealAnswers) {
@@ -125,12 +125,10 @@ const Participants = ({
   const animationProps = {
     layout: true,
     initial: "out",
-    // style: {
-    //   // position: isPresent ? "static" : "absolute",
-    // },
     animate: isPresent ? "in" : "out",
     whileTap: "tapped",
     variants: {
+      initial: {},
       // in: { scaleY: 1, opacity: 1, color: "green" },
       // out: { scaleY: 0, opacity: 0.5, zIndex: -1, color: "blue" },
       // tapped: { scale: 0.98, opacity: 0.5, transition: { duration: 0.1 } },

@@ -54,7 +54,7 @@ const VideoTile = ({
     await animate(
       scope.current,
       { y: 0 },
-      { ease: "anticipate", duration: 0.75 }
+      { ease: "anticipate", duration: 0.65 }
     );
   }, [animate, scope]);
 
