@@ -47,19 +47,13 @@ const QuestionView = ({
       key={questionText}
       flexDir="column"
       justifyContent="center"
-      gap={6}
       height="100%"
       p="4"
     >
       <Heading>
-        {Boolean(currentAnswer) || reveal ? (
-          <Text as="h1" fontWeight="800">
-            {questionText}
-          </Text>
-        ) : (
-          <AnimatedTitle>{questionText}</AnimatedTitle>
-        )}
+        <AnimatedTitle>{questionText}</AnimatedTitle>
       </Heading>
+
       <Center
         justifyContent="space-evenly"
         gap="4"
@@ -68,7 +62,7 @@ const QuestionView = ({
         h="100%"
         w="100%"
       >
-        <Flex my="4" w="100%" h="240px">
+        <Flex my="4" w="100%" h={["100px", null, "240px"]}>
           {Object.keys(alternatives).map((k) => {
             return (
               <AnswerCard
@@ -84,9 +78,13 @@ const QuestionView = ({
           })}
         </Flex>
 
-        <Heading my="4" visibility={reveal ? "inherit" : "hidden"}>
-          The correct answer is: {alternatives[correctAlternative]}
-        </Heading>
+        <Center h="80px">
+          {reveal && (
+            <Heading my="4" fontSize={["md", null, "2xl"]}>
+              The correct answer is: {alternatives[correctAlternative]}
+            </Heading>
+          )}
+        </Center>
 
         <Box mb="8">
           {reveal && isQuizMaster && (

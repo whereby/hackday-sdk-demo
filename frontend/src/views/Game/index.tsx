@@ -4,11 +4,12 @@ import { useRoomConnection } from "@whereby.com/browser-sdk";
 
 import Participants from "../../components/Participants";
 import LobbyView from "../LobbyView";
-import { WHEREBY_ROOM } from "../../config/constants";
 
 import useQuizGame, { LocalMediaRef } from "../../useQuizGame";
 import QuestionView from "../QuestionView";
 import Scoreboard from "../Scoreboard";
+
+import { WHEREBY_ROOM } from "../../config/room";
 
 interface LobbyViewProps {
   localMedia: LocalMediaRef;
@@ -91,13 +92,13 @@ const Game = ({ localMedia, displayName }: LobbyViewProps) => {
   }
 
   return (
-    <Flex flexDirection="column" height="100%">
-      <Box flexGrow="3">{currentScreen}</Box>
-      <Box flexGrow="2" p="4" background="whiteAlpha.500">
-        {quizCurrentScreen !== "end" && (
+    <Flex flexDirection="column" height="100%" gap={["4", null]}>
+      <Box flexGrow={[1, null, 3]}>{currentScreen}</Box>
+      {quizCurrentScreen !== "end" && (
+        <Box flexGrow="2" p="4" background="whiteAlpha.500">
           <Participants roomConnection={roomConnection} quizState={quizState} />
-        )}
-      </Box>
+        </Box>
+      )}
     </Flex>
   );
 };

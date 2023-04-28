@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Input, Button, Box, Flex, Heading, Spinner } from "@chakra-ui/react";
+import {
+  Input,
+  Button,
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Spinner,
+} from "@chakra-ui/react";
+import { FiCheck } from "react-icons/fi";
 
 import { LocalMediaRef } from "../../useQuizGame";
 import VideoTile from "../../components/VideoTile";
@@ -19,10 +28,10 @@ const PreCallView = ({ localMedia, handleOnReady }: PreCallViewProps) => {
   } = localMedia.state;
   const { setCameraDevice, setMicrophoneDevice } = localMedia.actions;
 
-  const [name, setName] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [hasInitialized, setHasInitialized] = useState(false);
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setName(event.target.value);
+    setDisplayName(event.target.value);
 
   useEffect(() => {
     if (cameraDevices.length || microphoneDevices.length) {
@@ -39,6 +48,12 @@ const PreCallView = ({ localMedia, handleOnReady }: PreCallViewProps) => {
     }
   }, [localStream]);
 
+  const selectedDeviceStyleProps = {
+    border: "1px solid #4880c8",
+    fontWeight: "bold",
+    rightIcon: <FiCheck />,
+  };
+
   return (
     <Box>
       <Heading mt="10" mb="4">
@@ -51,7 +66,7 @@ const PreCallView = ({ localMedia, handleOnReady }: PreCallViewProps) => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                handleOnReady(name);
+                handleOnReady(displayName);
               }}
             >
               <Flex justifyContent="center" gap="2" mt="4">
@@ -59,93 +74,79 @@ const PreCallView = ({ localMedia, handleOnReady }: PreCallViewProps) => {
                   autoFocus
                   w="50%"
                   placeholder="Your name... (required)"
-                  value={name}
+                  value={displayName}
                   onChange={handleTextChange}
                 ></Input>
-                <Button isDisabled={name.length === 0} type={"submit"}>
+                <Button isDisabled={displayName.length === 0} type={"submit"}>
                   Ready!
                 </Button>
               </Flex>
             </form>
 
             <Box my="4">
-              <Heading as="h3" mb={"2"} size="md" letterSpacing="0px">
+              <Heading as="h3" mb="2" size="md">
                 Camera device
               </Heading>
-              {cameraDevices.map((d) => (
-                <Button
-                  mb={"2"}
-                  backgroundColor={"transparent"}
-                  border={
-                    currentCameraDeviceId === d.deviceId
-                      ? "1px solid #4880c8"
-                      : undefined
-                  }
-                  key={d.deviceId}
-                  fontWeight={
-                    currentCameraDeviceId === d.deviceId ? "bold" : undefined
-                  }
-                  onClick={() => {
-                    if (d.deviceId !== currentCameraDeviceId) {
-                      setCameraDevice(d.deviceId);
+              {cameraDevices.map((d) => {
+                const currentDevice = currentCameraDeviceId === d.deviceId;
+                return (
+                  <Button
+                    key={d.deviceId}
+                    mb="2"
+                    backgroundColor="transparent"
+                    onClick={() =>
+                      !currentDevice && setCameraDevice(d.deviceId)
                     }
-                  }}
-                >
-                  {d.label}{" "}
-                </Button>
-              ))}
+                    {...(currentDevice && { ...selectedDeviceStyleProps })}
+                  >
+                    {d.label}
+                  </Button>
+                );
+              })}
             </Box>
+
             <Box
               display={"flex"}
               flexDirection={"column"}
               alignItems={"center"}
               my="4"
             >
-              <Heading as="h3" mb={"2"} size="md" letterSpacing="0px">
+              <Heading as="h3" mb="2" size="md">
                 Microphone device
               </Heading>
-              {microphoneDevices.map((d) => (
-                <Button
-                  mb={"2"}
-                  backgroundColor={"transparent"}
-                  border={
-                    currentMicrophoneDeviceId === d.deviceId
-                      ? "1px solid #4880c8"
-                      : undefined
-                  }
-                  key={d.deviceId}
-                  fontWeight={
-                    currentMicrophoneDeviceId === d.deviceId
-                      ? "bold"
-                      : undefined
-                  }
-                  onClick={() => {
-                    if (d.deviceId !== currentMicrophoneDeviceId) {
-                      setMicrophoneDevice(d.deviceId);
+              {microphoneDevices.map((d) => {
+                const currentDevice = currentMicrophoneDeviceId === d.deviceId;
+
+                return (
+                  <Button
+                    key={d.deviceId}
+                    mb="2"
+                    backgroundColor="transparent"
+                    {...(currentDevice && { ...selectedDeviceStyleProps })}
+                    onClick={() =>
+                      !currentDevice && setMicrophoneDevice(d.deviceId)
                     }
-                  }}
-                >
-                  {d.label}{" "}
-                </Button>
-              ))}
+                  >
+                    {d.label}
+                  </Button>
+                );
+              })}
             </Box>
           </>
         ) : (
-          <div>
-            <p>
+          <Box>
+            <Text>
               Initializing, please allow access to your camera and microphone
-            </p>
-            <div>
-              <Spinner
-                mt={"4"}
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="blue.500"
-                size="xl"
-              />
-            </div>
-          </div>
+            </Text>
+            <Spinner
+              my="4"
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </Box>
         )}
       </Box>
     </Box>

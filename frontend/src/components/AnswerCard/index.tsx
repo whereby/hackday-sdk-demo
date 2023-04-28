@@ -21,24 +21,6 @@ const AnswerCard = ({
   isCorrect,
   reveal,
 }: AnswerCardProps) => {
-  const blockVariants = {
-    initial: {
-      rotate: 0,
-    },
-    target: {
-      rotate: 360,
-    },
-    clicked: {
-      scale: 1.5,
-    },
-    notClicked: {
-      scale: 1,
-    },
-  };
-
-  const rotate = useMotionValue(0);
-  const scale = useTransform(rotate, [0, 270], [0, 1]);
-
   const borderColor = useMemo(() => {
     if (reveal) {
       if (isCorrect) return "green.300";
@@ -56,20 +38,10 @@ const AnswerCard = ({
       w="50%"
       h="100%"
       m="4"
-      // style={{
-      //   height: "400px",
-      //   width: "400px",
-      //   // rotate,
-      //   // scale,
-      // }}
-      // variants={blockVariants}
-      // initial="initial"
-      // animate="target"
-      // whileTap={locked ? "clicked" : "notClicked"}
       transition={{
-        ease: "easeInOut",
+        ease: "anticipate",
         duration: 2,
-        delay: 1,
+        delay: 2,
       }}
       borderColor={borderColor}
       borderWidth={isSelected || reveal ? "8px" : "0px"}

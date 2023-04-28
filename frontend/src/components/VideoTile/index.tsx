@@ -87,10 +87,12 @@ const VideoTile = ({
     }
   }, [correctAnimation, incorrectAnimation, popAnimation, roundResult]);
 
-  const tileSize =
-    variant === "small"
-      ? "120px"
-      : ["120px", "120px", "180px", "200px", "240px"];
+  // const tileSize =
+  //   variant === "small"
+  //     ? "120px"
+  //     : ["120px", "120px", "180px", "200px", "240px"];
+
+  const tileSize = ["100px", "120px", "180px", "240px"];
 
   const borderColor = useMemo(() => {
     if (roundResult === "correct") {

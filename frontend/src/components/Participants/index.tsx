@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, memo } from "react";
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { motion, AnimatePresence, usePresence } from "framer-motion";
 
 import { RoomConnectionRef, GameState } from "../../useQuizGame";
@@ -21,12 +21,9 @@ const Participants = ({
   variant = "default",
   screen = "game",
 }: ParticipantsProps) => {
-  console.log("partipants");
-
   const { state: roomState } = roomConnection;
   const { remoteParticipants, localParticipant } = roomState;
 
-  // const [isFinalScore, setIsFinalScore] = useState(false);
   const [tiles, setTiles] = useState([...remoteParticipants, localParticipant]);
   const [isPresent, safeToRemove] = usePresence();
   const [roundResults, setRoundResults] = useState<{
