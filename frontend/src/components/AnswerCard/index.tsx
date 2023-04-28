@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useMemo } from "react";
 
 interface AnswerCardProps {

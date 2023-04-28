@@ -1,6 +1,5 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
-import { Flex, Box, Button, Center, Heading, Text } from "@chakra-ui/react";
+import { Flex, Box, Button, Center, Heading } from "@chakra-ui/react";
 
 import AnimatedTitle from "../../components/AnimatedTitle";
 import AnswerCard from "../../components/AnswerCard";

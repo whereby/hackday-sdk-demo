@@ -34,7 +34,6 @@ const Participants = ({
   // TODO: fix currentAnswers interface
 
   const sortTiles = useCallback(() => {
-    console.log("Sorting tiles!");
     const shuffled = [...tiles].sort((a, b) => {
       const aId = a?.id || "unknown";
       const aName = a?.displayName || "Unknown";
@@ -127,13 +126,12 @@ const Participants = ({
     animate: isPresent ? "in" : "out",
     whileTap: "tapped",
     variants: {
-      initial: {},
-      // in: { scaleY: 1, opacity: 1, color: "green" },
-      // out: { scaleY: 0, opacity: 0.5, zIndex: -1, color: "blue" },
-      // tapped: { scale: 0.98, opacity: 0.5, transition: { duration: 0.1 } },
+      in: { scaleY: 1, opacity: 1 },
+      out: { scaleY: 0, opacity: 0.5, zIndex: -1 },
+      tapped: { scale: 0.98, opacity: 0.5, transition: { duration: 0.1 } },
     },
-    onAnimationComplete: () => !isPresent && safeToRemove(),
     transition,
+    onAnimationComplete: () => !isPresent && safeToRemove(),
   };
 
   return (
