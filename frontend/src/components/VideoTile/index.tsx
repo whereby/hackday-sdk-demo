@@ -58,6 +58,14 @@ const VideoTile = ({
     );
   }, [animate, scope]);
 
+  const incorrectAnimation = useCallback(async () => {
+    await animate(
+      scope.current,
+      { x: [-20, 0] },
+      { type: "spring", stiffness: 500, mass: 1, damping: 5 }
+    );
+  }, [animate, scope]);
+
   useEffect(() => {
     popAnimation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,11 +83,11 @@ const VideoTile = ({
     if (roundResult === "correct") {
       correctAnimation();
     } else if (roundResult === "incorrect") {
-      popAnimation();
+      incorrectAnimation();
     }
-  }, [correctAnimation, popAnimation, roundResult]);
+  }, [correctAnimation, incorrectAnimation, popAnimation, roundResult]);
 
-  const tileSize = variant === "small" ? "120px" : "240px";
+  const tileSize = variant === "small" ? "120px" : ["120px", "120px", "240px"];
 
   const borderColor = useMemo(() => {
     if (roundResult === "correct") {

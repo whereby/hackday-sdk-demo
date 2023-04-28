@@ -144,7 +144,7 @@ const Participants = ({
         justifyContent={screen === "scoreboard" ? "center" : "flex-start"}
         w="100%"
       >
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {tiles.map((participant) => {
             if (!participant) return null;
 
