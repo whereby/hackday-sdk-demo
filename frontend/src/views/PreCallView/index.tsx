@@ -42,12 +42,22 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
           <Button onClick={handleClick}>Ready!</Button>
         </Flex>
         <Box my="4">
-          <Heading as="h3" size="md" letterSpacing="0px">
-            Camera device -
+          <Heading as="h3" mb={"2"} size="md" letterSpacing="0px">
+            Camera device
           </Heading>
           {cameraDevices.map((d) => (
-            <p
+            <Button
+              mb={"2"}
+              backgroundColor={"transparent"}
+              border={
+                currentCameraDeviceId === d.deviceId
+                  ? "1px solid #4880c8"
+                  : undefined
+              }
               key={d.deviceId}
+              fontWeight={
+                currentCameraDeviceId === d.deviceId ? "bold" : undefined
+              }
               onClick={() => {
                 if (d.deviceId !== currentCameraDeviceId) {
                   setCameraDevice(d.deviceId);
@@ -55,17 +65,31 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
               }}
             >
               {d.label}{" "}
-              {currentCameraDeviceId === d.deviceId ? "(selected)" : ""}
-            </p>
+            </Button>
           ))}
         </Box>
-        <Box my="4">
-          <Heading as="h3" size="md" letterSpacing="0px">
-            Microphone device -
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          alignItems={"center"}
+          my="4"
+        >
+          <Heading as="h3" mb={"2"} size="md" letterSpacing="0px">
+            Microphone device
           </Heading>
           {microphoneDevices.map((d) => (
-            <p
+            <Button
+              mb={"2"}
+              backgroundColor={"transparent"}
+              border={
+                currentMicrophoneDeviceId === d.deviceId
+                  ? "1px solid #4880c8"
+                  : undefined
+              }
               key={d.deviceId}
+              fontWeight={
+                currentMicrophoneDeviceId === d.deviceId ? "bold" : undefined
+              }
               onClick={() => {
                 if (d.deviceId !== currentMicrophoneDeviceId) {
                   setMicrophoneDevice(d.deviceId);
@@ -73,8 +97,7 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
               }}
             >
               {d.label}{" "}
-              {currentMicrophoneDeviceId === d.deviceId ? "(selected)" : ""}
-            </p>
+            </Button>
           ))}
         </Box>
       </Box>
