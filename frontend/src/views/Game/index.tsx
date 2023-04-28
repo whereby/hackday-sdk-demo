@@ -34,16 +34,8 @@ const Game = ({ localMedia, displayName }: LobbyViewProps) => {
     { isQuizMaster }
   );
 
-  const quizCurrentScreen = useMemo(() => quizState.screen, [quizState.screen]);
-  const quizCurrentQuestion = useMemo(
-    () => quizState.currentQuestion,
-    [quizState.currentQuestion]
-  );
-
-  const quizReveal = useMemo(
-    () => quizState.revealAnswers,
-    [quizState.revealAnswers]
-  );
+  const { screen, currentQuestion, revealAnswers: shouldReveal } = quizState;
+  const { postAnswer, nextQuestion, revealAnswers } = quizActions;
 
   const quizCurrentAnswer = useMemo(() => {
     const answers = quizState.currentAnswers || {};
@@ -51,11 +43,9 @@ const Game = ({ localMedia, displayName }: LobbyViewProps) => {
     return answers[pid];
   }, [localParticipant?.id, quizState.currentAnswers]);
 
-  const { postAnswer, nextQuestion, revealAnswers } = quizActions;
-
   let currentScreen: any = null;
 
-  switch (quizCurrentScreen) {
+  switch (screen) {
     case "welcome":
       currentScreen = (
         <LobbyView
@@ -70,9 +60,9 @@ const Game = ({ localMedia, displayName }: LobbyViewProps) => {
       currentScreen = (
         <QuestionView
           isQuizMaster={isQuizMaster}
-          reveal={quizReveal}
+          reveal={shouldReveal}
           currentAnswer={quizCurrentAnswer}
-          question={quizCurrentQuestion}
+          question={currentQuestion}
           answerQuestion={postAnswer}
           nextQuestionAction={nextQuestion}
           revealQuestionAnswers={revealAnswers}
@@ -94,7 +84,7 @@ const Game = ({ localMedia, displayName }: LobbyViewProps) => {
   return (
     <Flex flexDirection="column" height="100%" gap={["4", null]}>
       <Box flexGrow={[1, null, 3]}>{currentScreen}</Box>
-      {quizCurrentScreen !== "end" && (
+      {screen !== "end" && (
         <Box flexGrow="2" p="4" background="whiteAlpha.500">
           <Participants roomConnection={roomConnection} quizState={quizState} />
         </Box>

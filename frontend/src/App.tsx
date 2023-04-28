@@ -16,8 +16,6 @@ function App() {
   const { localStream } = localMedia.state;
   const { toggleCameraEnabled, toggleMicrophoneEnabled } = localMedia.actions;
 
-  console.log(localMedia);
-
   return (
     <Box
       h="100%"

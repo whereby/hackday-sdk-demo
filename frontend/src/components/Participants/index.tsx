@@ -122,7 +122,6 @@ const Participants = ({
 
   const animationProps = {
     layout: true,
-    initial: "out",
     animate: isPresent ? "in" : "out",
     whileTap: "tapped",
     variants: {
