@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { Box, position } from "@chakra-ui/react";
-
+import { Box } from "@chakra-ui/react";
 import { useLocalMedia } from "@whereby.com/browser-sdk";
+
 import PreCallView from "./views/PreCallView";
 import Game from "./views/Game";
 
-import background from "./assets/background2.svg";
-
-import DeviceControls from "./views/DeviceControls";
+import background from "./assets/background.svg";
+import DeviceControls from "./components/DeviceControls";
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
-  const [name, setName] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const localMedia = useLocalMedia({ audio: true, video: true });
 
   const { localStream } = localMedia.state;
@@ -30,13 +29,13 @@ function App() {
       {!isConnected ? (
         <PreCallView
           localMedia={localMedia}
-          handleOnReady={(name) => {
-            setName(name);
+          handleOnReady={(displayName) => {
+            setDisplayName(displayName);
             setIsConnected(true);
           }}
         />
       ) : (
-        <Game localMedia={localMedia} name={name} />
+        <Game localMedia={localMedia} displayName={displayName} />
       )}
 
       {localStream && (

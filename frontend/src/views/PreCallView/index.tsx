@@ -132,8 +132,9 @@ const PreCallView = ({ localMedia, handleOnReady }: PreCallViewProps) => {
           </>
         ) : (
           <div>
-            <p>Initializing, please allow access to your camera and</p>
-            microphone
+            <p>
+              Initializing, please allow access to your camera and microphone
+            </p>
             <div>
               <Spinner
                 mt={"4"}

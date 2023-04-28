@@ -6,7 +6,7 @@
 import { useEffect, useReducer, useState } from "react";
 import { useLocalMedia, useRoomConnection } from "@whereby.com/browser-sdk";
 
-import questions from "./events/questions";
+import questions from "./config/questions";
 // This is a hack, need to expose this type directly from the SDK
 export type RoomConnectionRef = ReturnType<typeof useRoomConnection>;
 export type LocalMediaRef = ReturnType<typeof useLocalMedia>;
@@ -179,8 +179,6 @@ export default function useQuizGame(
         );
       },
       nextQuestion() {
-        // TODO: Check if user is quiz master?
-        // Separate type or just straight to question
         if (questionCounter > questions.length - 1) {
           console.log("The quiz is over");
           roomActions.sendChatMessage(
@@ -189,6 +187,7 @@ export default function useQuizGame(
             })
           );
         }
+
         setQuestionCounter(questionCounter + 1);
         roomActions.sendChatMessage(JSON.stringify(questions[questionCounter]));
       },

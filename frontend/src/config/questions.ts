@@ -11,7 +11,42 @@ const questions = [
       correctAlternative: "A",
     },
   },
-
+  {
+    type: "QUESTION",
+    payload: {
+      question:
+        "What is the maximum video resolution for the Whereby Embedded API?",
+      alternatives: {
+        A: "1080p",
+        B: "720p",
+      },
+      correctAlternative: "B",
+    },
+  },
+  {
+    type: "QUESTION",
+    payload: {
+      question:
+        "What is the minimum required plan for using the Whereby Embedded API's cloud recording feature?",
+      alternatives: {
+        A: "Build plan",
+        B: "Free plan",
+      },
+      correctAlternative: "A",
+    },
+  },
+  {
+    type: "QUESTION",
+    payload: {
+      question:
+        "What technology do Whereby background effects use under the hood?",
+      alternatives: {
+        A: "Wasm",
+        B: "Flash",
+      },
+      correctAlternative: "A",
+    },
+  },
   // {
   //   type: "QUESTION",
   //   payload: {
@@ -49,20 +84,6 @@ const questions = [
   //     correctAlternative: "A",
   //   },
   // },
-
-  {
-    type: "QUESTION",
-    payload: {
-      question:
-        "What is the maximum video resolution for the Whereby Embedded API?",
-      alternatives: {
-        A: "1080p",
-        B: "720p",
-      },
-      correctAlternative: "B",
-    },
-  },
-
   // {
   //   type: "QUESTION",
   //   payload: {
@@ -99,30 +120,6 @@ const questions = [
   //     correctAlternative: "A",
   //   },
   // },
-  {
-    type: "QUESTION",
-    payload: {
-      question:
-        "What is the minimum required plan for using the Whereby Embedded API's cloud recording feature?",
-      alternatives: {
-        A: "Build plan",
-        B: "Free plan",
-      },
-      correctAlternative: "A",
-    },
-  },
-  {
-    type: "QUESTION",
-    payload: {
-      question:
-        "What technology do Whereby background effects use under the hood?",
-      alternatives: {
-        A: "Wasm",
-        B: "Flash",
-      },
-      correctAlternative: "A",
-    },
-  },
 ];
 
 export default questions;

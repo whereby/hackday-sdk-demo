@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { Flex, Box } from "@chakra-ui/react";
 import { useRoomConnection } from "@whereby.com/browser-sdk";
 
@@ -12,16 +12,16 @@ import Scoreboard from "../Scoreboard";
 
 interface LobbyViewProps {
   localMedia: LocalMediaRef;
-  name: string;
+  displayName: string;
 }
 
 const urlParams = new URLSearchParams(window.location.search);
 const isQuizMaster = !!urlParams.get("quizMaster");
 
-const Game = ({ localMedia, name }: LobbyViewProps) => {
+const Game = ({ localMedia, displayName }: LobbyViewProps) => {
   const roomConnection = useRoomConnection(WHEREBY_ROOM, {
     localMedia,
-    displayName: name,
+    displayName,
     logger: console,
   });
 

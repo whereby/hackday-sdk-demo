@@ -7,8 +7,6 @@ const config: ThemeConfig = {
 
 const overrides = {
   fonts: {
-    // heading: `'Bangers', cursive`,
-    // body: `'Bangers', cursive`,
     heading: `'Urbanist', sans-serif`,
     body: `'Urbanist', sans-serif`,
   },
@@ -16,11 +14,6 @@ const overrides = {
     Heading: {
       baseStyle: {
         fontWeight: 800,
-      },
-    },
-    Text: {
-      baseStyle: {
-        fontWeight: 400,
       },
     },
   },

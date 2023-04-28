@@ -21,6 +21,8 @@ const Participants = ({
   variant = "default",
   screen = "game",
 }: ParticipantsProps) => {
+  console.log("partipants");
+
   const { state: roomState } = roomConnection;
   const { remoteParticipants, localParticipant } = roomState;
 

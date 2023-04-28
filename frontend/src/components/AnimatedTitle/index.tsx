@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Flex, Text } from "@chakra-ui/react";
 
@@ -59,4 +59,4 @@ const Title = ({ children }: TitleProps) => {
   );
 };
 
-export default memo(Title);
+export default Title;
