@@ -56,8 +56,8 @@ const questions = [
       question:
         "What is the maximum video resolution for the Whereby Embedded API?",
       alternatives: {
-        A: "720p",
-        B: "1080p",
+        A: "1080p",
+        B: "720p",
       },
       correctAlternative: "B",
     },
@@ -81,8 +81,8 @@ const questions = [
   //     question:
   //       "What is the name of the public Whereby Embedded API endpoint for creating new meeting rooms?",
   //     alternatives: {
-  //       A: "/meetings",
-  //       B: "/rooms",
+  //       A: "/rooms",
+  //       B: "/meetings",
   //     },
   //     correctAlternative: "B",
   //   },
@@ -108,7 +108,7 @@ const questions = [
         A: "Build plan",
         B: "Free plan",
       },
-      correctAlternative: "B",
+      correctAlternative: "A",
     },
   },
   {
