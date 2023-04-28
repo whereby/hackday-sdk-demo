@@ -15,8 +15,7 @@ interface LobbyViewProps {
 
 const MotionButton = motion(Button);
 
-const tileSize = ["120px", "120px", "240px"];
-
+const qrCodeSize = ["120px", "120px", "180px", "240px"];
 
 const LobbyView = ({
   playerCount,
@@ -61,8 +60,24 @@ const LobbyView = ({
         <AnimatedTitle>Game Lobby</AnimatedTitle>
       </Heading>
       <Text>Waiting for players...</Text>
-     <Box h={tileSize}
-        w={tileSize} position="absolute" right="10" top="10"><QRCode value="https://hackday-sdk-demo.netlify.app/" /></Box>
+      <Box
+        h={qrCodeSize}
+        w={qrCodeSize}
+        position="absolute"
+        right="10"
+        top="10"
+        p="4"
+        background="green.200"
+        borderRadius="16px"
+      >
+        <QRCode
+          value="https://hackday-sdk-demo.netlify.app/"
+          style={{ height: "100%", width: "100%", padding: "8px" }}
+        />
+        <Heading as="h4" mt="6" fontSize="xl">
+          Join the fun!
+        </Heading>
+      </Box>
 
       <Flex
         flexDirection="column"
