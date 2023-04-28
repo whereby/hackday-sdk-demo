@@ -52,46 +52,47 @@ const Game = ({ localMedia, name }: LobbyViewProps) => {
 
   const { postAnswer, nextQuestion, revealAnswers } = quizActions;
 
-  const CurrentScreen = () => {
-    switch (quizCurrentScreen) {
-      case "welcome":
-        return (
-          <LobbyView
-            quizActions={quizActions}
-            playerCount={remoteParticipants.length + 1}
-            isQuizMaster={isQuizMaster}
-          />
-        );
-      case "question":
-        return (
-          <QuestionView
-            isQuizMaster={isQuizMaster}
-            reveal={quizReveal}
-            currentAnswer={quizCurrentAnswer}
-            question={quizCurrentQuestion}
-            answerQuestion={postAnswer}
-            nextQuestionAction={nextQuestion}
-            revealQuestionAnswers={revealAnswers}
-          />
-        );
-      case "end":
-        return (
-          <Scoreboard
-            variant={"end"}
-            quizState={quizState}
-            roomConnection={roomConnection}
-          />
-        );
-      default:
-        return <div>Not implemented</div>;
-    }
-  };
+  let currentScreen: any = null;
+
+  switch (quizCurrentScreen) {
+    case "welcome":
+      currentScreen = (
+        <LobbyView
+          quizActions={quizActions}
+          playerCount={remoteParticipants.length + 1}
+          isQuizMaster={isQuizMaster}
+        />
+      );
+      break;
+
+    case "question":
+      currentScreen = (
+        <QuestionView
+          isQuizMaster={isQuizMaster}
+          reveal={quizReveal}
+          currentAnswer={quizCurrentAnswer}
+          question={quizCurrentQuestion}
+          answerQuestion={postAnswer}
+          nextQuestionAction={nextQuestion}
+          revealQuestionAnswers={revealAnswers}
+        />
+      );
+      break;
+    case "end":
+      currentScreen = (
+        <Scoreboard
+          variant={"end"}
+          quizState={quizState}
+          roomConnection={roomConnection}
+        />
+      );
+      break;
+    default:
+  }
 
   return (
     <Flex flexDirection="column" height="100%">
-      <Box flexGrow="3">
-        <CurrentScreen />
-      </Box>
+      <Box flexGrow="3">{currentScreen}</Box>
       <Box flexGrow="2" p="4" background="whiteAlpha.500">
         {quizCurrentScreen !== "end" && (
           <Participants roomConnection={roomConnection} quizState={quizState} />
