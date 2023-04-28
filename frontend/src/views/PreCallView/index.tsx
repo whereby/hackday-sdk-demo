@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { Input, Button, Box, Flex, Heading } from "@chakra-ui/react";
 
-import { Input, Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
-
-import AnimatedTitle from "../../components/AnimatedTitle";
+import { LocalMediaRef } from "../../useQuizGame";
 import VideoTile from "../../components/VideoTile";
-import { chakraMotionElement } from "../../utils/useChakraMotion";
 
-const PreCallView = ({ localMedia, handleOnReady }) => {
+interface PreCallViewProps {
+  handleOnReady: (name: string) => void;
+  localMedia: LocalMediaRef;
+}
+
+const PreCallView = ({ localMedia, handleOnReady }: PreCallViewProps) => {
   const {
     currentCameraDeviceId,
     cameraDevices,
@@ -14,8 +17,7 @@ const PreCallView = ({ localMedia, handleOnReady }) => {
     currentMicrophoneDeviceId,
     microphoneDevices,
   } = localMedia.state;
-  const { setCameraDevice, toggleCameraEnabled, setMicrophoneDevice } =
-    localMedia.actions;
+  const { setCameraDevice, setMicrophoneDevice } = localMedia.actions;
 
   const [name, setName] = useState("");
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) =>
