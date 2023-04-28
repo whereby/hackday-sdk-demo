@@ -5,6 +5,7 @@ import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 import AnimatedTitle from "../../components/AnimatedTitle";
 import { GameActions } from "../../useQuizGame";
+import QRCode from "react-qr-code";
 
 interface LobbyViewProps {
   isQuizMaster: boolean;
@@ -13,6 +14,9 @@ interface LobbyViewProps {
 }
 
 const MotionButton = motion(Button);
+
+const tileSize = ["120px", "120px", "240px"];
+
 
 const LobbyView = ({
   playerCount,
@@ -57,6 +61,8 @@ const LobbyView = ({
         <AnimatedTitle>Game Lobby</AnimatedTitle>
       </Heading>
       <Text>Waiting for players...</Text>
+     <Box h={tileSize}
+        w={tileSize} position="absolute" right="10" top="10"><QRCode value="https://hackday-sdk-demo.netlify.app/" /></Box>
 
       <Flex
         flexDirection="column"
