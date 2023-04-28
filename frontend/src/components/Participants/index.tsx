@@ -13,7 +13,7 @@ interface ParticipantsProps {
   screen?: "scoreboard" | "game";
 }
 
-const SORTING_TIMEOUT = 4000;
+const SORTING_TIMEOUT = 4500;
 
 const Participants = ({
   roomConnection,
@@ -57,8 +57,9 @@ const Participants = ({
         return 1;
       }
     });
+
     setTiles(shuffled);
-  }, [tiles, scores]);
+  }, [scores, tiles]);
 
   // Sort on scoreboard view
   useEffect(() => {
