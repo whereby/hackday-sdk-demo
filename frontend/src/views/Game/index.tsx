@@ -75,7 +75,13 @@ const Game = ({ localMedia, name }: LobbyViewProps) => {
           />
         );
       case "end":
-        return <div></div>;
+        return (
+          <Scoreboard
+            variant={"end"}
+            quizState={quizState}
+            roomConnection={roomConnection}
+          />
+        );
       default:
         return <div>Not implemented</div>;
     }
