@@ -8,7 +8,7 @@ import Game from "./views/Game";
 import background from "./assets/background.svg";
 import DeviceControls from "./components/DeviceControls";
 
-function App() {
+function App({ roomUrl }: { roomUrl: string }) {
   const [isConnected, setIsConnected] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const localMedia = useLocalMedia({ audio: true, video: true });
@@ -35,7 +35,11 @@ function App() {
           }}
         />
       ) : (
-        <Game localMedia={localMedia} displayName={displayName} />
+        <Game
+          roomUrl={roomUrl}
+          localMedia={localMedia}
+          displayName={displayName}
+        />
       )}
 
       {localStream && (

@@ -9,18 +9,17 @@ import useQuizGame, { LocalMediaRef } from "../../useQuizGame";
 import QuestionView from "../QuestionView";
 import Scoreboard from "../Scoreboard";
 
-import { WHEREBY_ROOM } from "../../config/room";
-
-interface LobbyViewProps {
+interface GameProps {
   localMedia: LocalMediaRef;
   displayName: string;
+  roomUrl: string;
 }
 
 const urlParams = new URLSearchParams(window.location.search);
 const isQuizMaster = !!urlParams.get("quizMaster");
 
-const Game = ({ localMedia, displayName }: LobbyViewProps) => {
-  const roomConnection = useRoomConnection(WHEREBY_ROOM, {
+const Game = ({ localMedia, displayName, roomUrl }: GameProps) => {
+  const roomConnection = useRoomConnection(roomUrl, {
     localMedia,
     displayName,
     logger: console,
