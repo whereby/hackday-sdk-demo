@@ -1,4 +1,4 @@
-export const WHEREBY_ROOM =
-  "https://funtimes.whereby.com/quiz-app8b84481f-02ad-41d3-86dd-05c537e00ed9";
+// Put in the url to your own UNLOCKED Whereby Embedded room here
+export const WHEREBY_ROOM: string | null = null;
 
 export const PROD_URL = "https://hackday-sdk-demo.netlify.app/";
